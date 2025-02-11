@@ -13,10 +13,10 @@
       pkgs = import nixpkgs {
         inherit system;
         config = {
-          # permittedInsecurePackages = [
+          permittedInsecurePackages = [
             # For manta
-            # "python-2.7.18.8"
-          # ];
+            "python-2.7.18.8"
+          ];
           allowUnfree = true;
         };
       };
@@ -35,17 +35,18 @@
         # TODO
         # deepVariant = pkgs.deepvariant;
         freebayes = pkgs.freebayes;
-        # FIXME doest not work even with permittedinsecure packages
         manta = pkgs.manta;
         # FIXME python 2
-        strelka2 = pkgs.strelka2;
+        strelka2 = pkgs.strelka;
         tiddit = pkgs.tiddit;
         snpeff = pkgs.snpeff;
         # wait for PR
         # vep = pkgs.vep;
         bcftools = pkgs.bcftools;
         multiqc = pkgs.multiqc;
-        # This install the necessary executables for all nodes
+        # Datalad
+        datalad = pkgs.datalad;
+        git-annex = pkgs.git-annex;
       };
     };
 }
