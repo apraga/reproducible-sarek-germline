@@ -13,13 +13,13 @@
       pkgs = import nixpkgs {
         inherit system;
         config = {
+          allowUnfree = true;
+      # For manta
           permittedInsecurePackages = [
-            # For manta
             "python-2.7.18.8"
           ];
-          allowUnfree = true;
-        };
       };
+    };
 
     in {
       packages.${system} = {
@@ -30,8 +30,9 @@
         # FIXME
         dragmap = pkgs.dragmap;
         samtools = pkgs.samtools;
-        # FIXME python 2
-        cnvkit = pkgs.pythonPackages.cnvkit;
+        # FIXME pomegranate buid error due to scipy
+        #  https://hydra.nixos.org/build/289348001/nixlog/1
+        cnvkit = pkgs.python3Packages.cnvkit;
         # TODO
         # deepVariant = pkgs.deepvariant;
         freebayes = pkgs.freebayes;
