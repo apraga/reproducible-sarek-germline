@@ -1,7 +1,9 @@
 {
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+# Fix nixpkgs version
+    nixpkgs.url = "github:NixOS/nixpkgs/145fa633efa41fcbe7a436f7ec5dbb61756c44ba";
+    # nixpkgs.url = "nixpkgs/nixos-unstable";
   };
 
   description = "Reproducible sarek with Nix and datalad";
@@ -27,7 +29,6 @@
         bwa = pkgs.bwa;
         # FIXME
         bwa-mem2 = pkgs.bwa-mem2;
-        # FIXME
         dragmap = pkgs.dragmap;
         samtools = pkgs.samtools;
         # FIXME pomegranate buid error due to scipy
@@ -37,12 +38,11 @@
         # deepVariant = pkgs.deepvariant;
         freebayes = pkgs.freebayes;
         manta = pkgs.manta;
-        # FIXME python 2
+        # FIXME
         strelka2 = pkgs.strelka;
         tiddit = pkgs.tiddit;
         snpeff = pkgs.snpeff;
-        # wait for PR
-        # vep = pkgs.vep;
+        vep = pkgs.vep;
         bcftools = pkgs.bcftools;
         multiqc = pkgs.multiqc;
         # Datalad
