@@ -2,7 +2,7 @@
 
   inputs = {
 # Fix nixpkgs version
-    nixpkgs.url = "github:NixOS/nixpkgs/145fa633efa41fcbe7a436f7ec5dbb61756c44ba";
+    nixpkgs.url = "github:NixOS/nixpkgs/7b75c7a591aa1425d5feefa38dc3151b05d17dad";
     # nixpkgs.url = "nixpkgs/nixos-unstable";
   };
 
@@ -27,7 +27,6 @@
       packages.${system} = {
         default = pkgs.nextflow;
         bwa = pkgs.bwa;
-        # FIXME
         bwa-mem2 = pkgs.bwa-mem2;
         dragmap = pkgs.dragmap;
         samtools = pkgs.samtools;
