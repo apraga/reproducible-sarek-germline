@@ -9,6 +9,11 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
+
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   description = "Reproducible sarek with Nix and datalad";
@@ -18,6 +23,10 @@
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
+      ];
+
+      imports = [
+        ./dev.nix
       ];
 
       perSystem = {
