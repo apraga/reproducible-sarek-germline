@@ -26,17 +26,18 @@ datalad get *
 (In bold, new packages added to nix)
 
 - [x] bwa 
-- [ ] bwa-mem2 : error
-- [ ] *dragmap* : error
+- [x] bwa-mem2
+- [x] dragmap
 - [x] samtools 
-- [ ] cnvkit : some method may be wrong 
+- [ ] cnvkit : build but hMM method may be wrong 
 - [ ] *deepVariant* : todo
 - [x] freebayes 
 - [ ] manta : todo
-- [x] strelka2 (local, due to python2)
+- [x] strelka2 (local, due to python2
+)
 - [x] tiddit 
 - [x] snpeff 
-- [ ] *vep* : error
+- [x] vep
 - [x] bcftools 
 - [x] *multiqc*
  

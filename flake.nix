@@ -19,6 +19,7 @@
       # For manta
           permittedInsecurePackages = [
             "python-2.7.18.8"
+            "python-2.7.18.8-env"
           ];
       };
     };
