@@ -23,21 +23,20 @@ datalad get *
 
 ## Available packages
 
-(In bold, new packages added to nix)
+(In bold, new packages added to nix or with significant changes)
 
 - [x] bwa 
-- [x] bwa-mem2
-- [x] dragmap
+- [x] bwa-mem2 
+- [x] *dragmap*
 - [x] samtools 
-- [ ] cnvkit : build but hMM method may be wrong 
+- [ ] cnvkit : some method may be wrong 
 - [ ] *deepVariant* : todo
 - [x] freebayes 
 - [ ] manta : todo
-- [x] strelka2 (local, due to python2
-)
+- [x] *strelka2* (local, due to python2)
 - [x] tiddit 
 - [x] snpeff 
-- [x] vep
+- [x] *vep* 
 - [x] bcftools 
 - [x] *multiqc*
  
