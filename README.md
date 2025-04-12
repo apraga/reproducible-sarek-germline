@@ -29,11 +29,11 @@ datalad get *
 - [ ] bwa-mem2 : error
 - [ ] *dragmap* : error
 - [x] samtools 
-- [ ] cnvkit error
+- [ ] cnvkit : some method may be wrong 
 - [ ] *deepVariant* : todo
 - [x] freebayes 
 - [ ] manta : todo
-- [ ] strelka2 : error
+- [x] strelka2 (local, due to python2)
 - [x] tiddit 
 - [x] snpeff 
 - [ ] *vep* : error

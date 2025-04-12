@@ -1,0 +1,12 @@
+diff --git a/src/c++/lib/calibration/IndelErrorModel.hh b/src/c++/lib/calibration/IndelErrorModel.hh
+index 761930ec..2985343a 100644
+--- a/src/c++/lib/calibration/IndelErrorModel.hh
++++ b/src/c++/lib/calibration/IndelErrorModel.hh
+@@ -19,6 +19,7 @@
+ 
+ #pragma once
+ 
++#include <limits>
+ #include "IndelErrorRateSet.hh"
+ 
+ #include "starling_common/AlleleReportInfo.hh"
