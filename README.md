@@ -1,3 +1,5 @@
+![CI check](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/nix-flake.yml/badge.svg)
+
 This repository enhances [nf-core sarek pipeline](https://nf-co.re/sarek/3.4.2/) (germline only) reproducibility by 
 1. install all dependencies with [nix](https://nixos.org/) for bitwise reproducibility
 2. install datasets for variant calling, annotation and filter with [datalad](https://www.datalad.org/)

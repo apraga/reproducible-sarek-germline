@@ -2,10 +2,9 @@ name: "Build All Flake Packages"
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, dev ]
   pull_request:
-    branches: [ main, master ]
-  workflow_dispatch: # Allow manual triggering
+    branches: [ main, dev ]
 
 jobs:
   build-all:
