@@ -36,9 +36,10 @@
         # TODO
         # deepVariant = pkgs.deepvariant;
         freebayes = pkgs.freebayes;
-        manta = pkgs.manta;
         # FIXME
-        strelka2 = pkgs.strelka;
+        # manta = pkgs.manta;
+        # FIXME
+        # strelka2 = pkgs.strelka;
         tiddit = pkgs.tiddit;
         snpeff = pkgs.snpeff;
         vep = pkgs.vep;
