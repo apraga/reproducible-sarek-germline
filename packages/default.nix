@@ -1,6 +1,6 @@
 {
   perSystem =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
     {
       packages = {
         default = pkgs.nextflow;
@@ -32,5 +32,7 @@
 
         strelka = pkgs.callPackage ./strelka { };
       };
+
+      checks = config.packages;
     };
 }
