@@ -21,6 +21,7 @@ python2Packages.buildPythonPackage rec {
   build-system = [ python2Packages.setuptools ];
 
   # No test as it requires read/write permissions on the source dir
+  doCheck = false;
 
   meta = {
     description = "Python library that makes color math, color scales, and color-space conversion easy";
