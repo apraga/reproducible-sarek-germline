@@ -4,13 +4,18 @@
   stdenv,
   fetchFromGitHub,
   htslib,
+
+  # nativeBuildInputs
   cmake,
-  curl,
-  rapidjson,
+
+  # buildInputs
   boost,
+  curl,
   zlib,
   python2,
   pyflow,
+
+  rapidjson,
 }:
 
 let
@@ -23,7 +28,7 @@ stdenv.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "Illumina";
     repo = "strelka";
-    tag = "v2.9.10";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-7l4CmW8vUJ3sVS1PdbzQY8nXkdUZZisE7ESEUGNd09s=";
   };
 
@@ -85,8 +90,8 @@ stdenv.mkDerivation (finalAttrs: {
   buildInputs = [
     boost
     curl
-    zlib
     pythonEnv
+    zlib
   ];
 
   propagatedBuildInputs = [ pythonEnv ];
@@ -95,15 +100,14 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.cmakeFeature "CMAKE_CXX_STANDARD" "14")
   ];
 
-  env.NIX_CFLAGS_COMPILE = toString [
-    "-Wno-error=maybe-uninitialized"
-    "-Wno-error=array-bounds"
-  ];
-
-  preConfigure = ''
-    export CXXFLAGS="-I${htslib}/include -I${rapidjson}/include"
-    export LDFLAGS="-L${htslib}/lib -lhts"
-  '';
+  env = {
+    NIX_CFLAGS_COMPILE = toString [
+      "-Wno-error=maybe-uninitialized"
+      "-Wno-error=array-bounds"
+    ];
+    CXXFLAGS = "-I${htslib}/include -I${rapidjson}/include";
+    LDFLAGS = "-L${htslib}/lib -lhts";
+  };
 
   meta = {
     description = "Germline and small variant caller";
