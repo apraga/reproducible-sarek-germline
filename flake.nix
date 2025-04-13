@@ -64,7 +64,7 @@
             freebayes = pkgs.freebayes;
             # FIXME
             # manta = pkgs.manta;
-            strelka = pkgs.callPackage pkgs/strelka/package.nix { };
+            strelka = pkgs.callPackage packages/strelka/package.nix { };
             tiddit = pkgs.tiddit;
             snpeff = pkgs.snpeff;
             vep = pkgs.vep;
