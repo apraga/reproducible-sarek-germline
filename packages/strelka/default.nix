@@ -15,7 +15,7 @@
 }:
 
 let
-  pyflow = pkgs.callPackage ../pyflow/package.nix { };
+  pyflow = pkgs.callPackage ../pyflow { };
   pythonEnv = python2.withPackages (ps: [ pyflow ]);
 in
 stdenv.mkDerivation (finalAttrs: {

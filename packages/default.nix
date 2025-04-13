@@ -30,7 +30,7 @@
         #  https://hydra.nixos.org/build/289348001/nixlog/1
         inherit (pkgs.python3Packages) cnvkit;
 
-        strelka = pkgs.callPackage ./strelka/package.nix { };
+        strelka = pkgs.callPackage ./strelka { };
       };
     };
 }
