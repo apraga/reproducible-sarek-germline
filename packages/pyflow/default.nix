@@ -1,15 +1,7 @@
 {
   lib,
-  stdenv,
   fetchFromGitHub,
-  fetchpatch,
-  htslib,
-  cmake,
-  rapidjson,
-  boost,
-  zlib,
   python2Packages,
-  python3Packages,
 }:
 
 python2Packages.buildPythonPackage rec {
