@@ -30,7 +30,10 @@
         #  https://hydra.nixos.org/build/289348001/nixlog/1
         inherit (pkgs.python3Packages) cnvkit;
 
-        strelka = pkgs.callPackage ./strelka { };
+        pyflow = pkgs.callPackage ./pyflow { };
+        strelka = pkgs.callPackage ./strelka {
+          inherit (config.packages) pyflow;
+        };
       };
 
       checks = config.packages;

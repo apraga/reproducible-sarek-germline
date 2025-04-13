@@ -10,11 +10,10 @@
   boost,
   zlib,
   python2,
-  pkgs,
+  pyflow,
 }:
 
 let
-  pyflow = pkgs.callPackage ../pyflow { };
   pythonEnv = python2.withPackages (ps: [ pyflow ]);
 in
 stdenv.mkDerivation (finalAttrs: {
