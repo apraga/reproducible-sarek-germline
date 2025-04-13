@@ -28,6 +28,7 @@
       imports = [
         ./dev.nix
         ./packages
+        ./shell.nix
       ];
 
       perSystem =
