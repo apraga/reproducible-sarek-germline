@@ -8,16 +8,22 @@ With 3 simple commandes, the pipeline is ready to be run. No need for Docker or 
 
 ## Install all dependencies
 
-TODO: nix install + flakes setup + improve command
+In a shell :
+
 ```
-nix flake show --json | jq  '.packages."x86_64-linux"|keys[]' | xargs -I {} nix profile install .#{}
+nix develop
 ```
 
 ## Install datasets
 
-```bash
-datalad clone https://github.com/apraga/dgenomes /WORKDIR/dgenomes
-cd /WORKDIR/dgenomes
+To install them on /WORKDIR/dgenomes
+<!---
+# Not uptodate yet
+cd /WORKDIR
+datalad install https://datasets.datalad.org/dgenomes
+---!>
+
+cd dgenomes
 datalad get *
 ```
 
@@ -39,3 +45,7 @@ datalad get *
 - [x] *vep*
 - [x] bcftools
 - [x] *multiqc*
+
+## Troubleshoot
+### `gzip` : Too many levels of symbolic links
+This happens with the FASTA file in genome_human. `gzip -f` works.

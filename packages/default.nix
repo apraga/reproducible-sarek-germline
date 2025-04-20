@@ -31,6 +31,7 @@
             # FIXME
             # manta
             multiqc
+            nextflow
             samtools
             snpeff
             tiddit
