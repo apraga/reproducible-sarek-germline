@@ -1,0 +1,13 @@
+diff --git a/multiqc/utils/util_functions.py b/multiqc/utils/util_functions.py
+index 0c0f3ccf..87f5aaf5 100644
+--- a/multiqc/utils/util_functions.py
++++ b/multiqc/utils/util_functions.py
+@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
+ def rmtree_with_retries(
+     path: Union[str, Path, None],
+     _logger: Optional[logging.Logger] = None,
+-    max_retries: int = 10,
++    max_retries: int = 2,
+ ):
+     """
+     Robustly tries to delete paths.

@@ -27,11 +27,14 @@
             # TODO
             # deepvariant
             dragmap
+            fastp
             freebayes
+            htslib
             # FIXME
             # manta
-            multiqc
+            # multiqc # see below
             nextflow
+            nf-test # Remove ?
             samtools
             snpeff
             tiddit
@@ -46,6 +49,8 @@
           #  https://hydra.nixos.org/build/289348001/nixlog/1
           inherit (pkgs.python3Packages) cnvkit;
 
+          # wait for upstream PR to be merged
+          multiqc = pkgs.callPackage ./multiqc { }; 
           pyflow = pkgs.callPackage ./pyflow { };
           strelka = pkgs.callPackage ./strelka {
             inherit (self) pyflow;

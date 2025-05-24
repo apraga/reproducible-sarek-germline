@@ -46,6 +46,14 @@ datalad get *
 - [x] bcftools
 - [x] *multiqc*
 
+## Run test
+
+It requires a special configuration (see `test.config`).
+The full pipeline can be run with from sarek (cloned into a subdirectory)
+
+nextflow run main.nf -profile test -c ../test.config
+
+
 ## Troubleshoot
 ### `gzip` : Too many levels of symbolic links
 This happens with the FASTA file in genome_human. `gzip -f` works.
