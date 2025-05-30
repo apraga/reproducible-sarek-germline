@@ -52,13 +52,13 @@ stdenv.mkDerivation (finalAttrs: {
     # Replace executable with nix. bgzip9 and bgzf_cat are vendored
     substituteInPlace src/python/lib/strelkaSharedOptions.py \
       --replace-fail 'bgzipBin=joinFile(libexecDir,exeFile("bgzip"))' \
-                     'bgzipBin=exeFile("${htslib}/bin/bgzip")' \
+                     'bgzipBin=exeFile("${lib.getExe' htslib "bgzip"}")' \
       --replace-fail 'htsfileBin=joinFile(libexecDir,exeFile("htsfile"))' \
-                     'htsfileBin=exeFile("${htslib}/bin/htsfile")' \
+                     'htsfileBin=exeFile("${lib.getExe' htslib "htsfile"}")' \
       --replace-fail 'samtoolsBin=joinFile(libexecDir,exeFile("samtools"))' \
-                     'samtoolsBin=exeFile("${htslib}/bin/samtools")' \
+                     'samtoolsBin=exeFile("${lib.getExe' htslib "samtools"}")' \
       --replace-fail 'tabixBin=joinFile(libexecDir,exeFile("tabix"))' \
-                     'tabixBin=exeFile("${htslib}/bin/tabix")'
+                     'tabixBin=exeFile("${lib.getExe' htslib "tabix"}")'
 
     for f in src/python/bin/*.py; do
       substituteInPlace $f \
