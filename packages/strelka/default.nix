@@ -51,14 +51,14 @@ stdenv.mkDerivation (finalAttrs: {
 
     # Replace executable with nix. bgzip9 and bgzf_cat are vendored
     substituteInPlace src/python/lib/strelkaSharedOptions.py \
-      --replace-fail "bgzipBin=joinFile(libexecDir,exeFile(\"bgzip\"))" \
-                     "bgzipBin=exeFile(\"${htslib}/bin/bgzip\")" \
-      --replace-fail "htsfileBin=joinFile(libexecDir,exeFile(\"htsfile\"))" \
-                     "htsfileBin=exeFile(\"${htslib}/bin/htsfile\")" \
-      --replace-fail "samtoolsBin=joinFile(libexecDir,exeFile(\"samtools\"))" \
-                     "samtoolsBin=exeFile(\"${htslib}/bin/samtools\")" \
-      --replace-fail "tabixBin=joinFile(libexecDir,exeFile(\"tabix\"))" \
-                     "tabixBin=exeFile(\"${htslib}/bin/tabix\")"
+      --replace-fail 'bgzipBin=joinFile(libexecDir,exeFile("bgzip"))' \
+                     'bgzipBin=exeFile("${htslib}/bin/bgzip")' \
+      --replace-fail 'htsfileBin=joinFile(libexecDir,exeFile("htsfile"))' \
+                     'htsfileBin=exeFile("${htslib}/bin/htsfile")' \
+      --replace-fail 'samtoolsBin=joinFile(libexecDir,exeFile("samtools"))' \
+                     'samtoolsBin=exeFile("${htslib}/bin/samtools")' \
+      --replace-fail 'tabixBin=joinFile(libexecDir,exeFile("tabix"))' \
+                     'tabixBin=exeFile("${htslib}/bin/tabix")'
 
     for f in src/python/bin/*.py; do
       substituteInPlace $f \
@@ -73,15 +73,15 @@ stdenv.mkDerivation (finalAttrs: {
     for f in strelkaSequenceErrorEstimation.py strelkaGermlineWorkflow.py snoiseWorkflow.py sequenceAlleleCountsWorkflow.py ; do
       substituteInPlace src/python/lib/''${f} \
         --replace-fail \
-          "pyflowDir=os.path.join(scriptDir,\"pyflow\")" \
-          "pyflowDir=\"${pyflow}/${pythonEnv.sitePackages}\""
+          'pyflowDir=os.path.join(scriptDir,"pyflow")' \
+          'pyflowDir="${pyflow}/${pythonEnv.sitePackages}"'
     done
 
     # Special case
     substituteInPlace src/python/lib/strelkaSomaticWorkflow.py \
       --replace-fail \
-        "sys.path.append(os.path.join(scriptDir,\"pyflow\"))" \
-        "sys.path.append(\"${pyflow}/${pythonEnv.sitePackages}\")"
+        'sys.path.append(os.path.join(scriptDir,"pyflow"))' \
+        'sys.path.append("${pyflow}/${pythonEnv.sitePackages}")'
   '';
 
   nativeBuildInputs = [
