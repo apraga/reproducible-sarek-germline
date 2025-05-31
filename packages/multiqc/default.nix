@@ -32,7 +32,7 @@ python3Packages.buildPythonApplication rec {
 
   patch = [
     ./multiqc-maxretries.patch
-  ] ;
+  ];
   
   sourceRoot = "multiqc";
 
