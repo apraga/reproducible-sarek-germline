@@ -32,7 +32,7 @@
             htslib
             # FIXME
             # manta
-            # multiqc # see below
+            multiqc
             nextflow
             nf-test # Remove ?
             samtools
@@ -47,10 +47,10 @@
 
           # FIXME pomegranate buid error due to scipy
           #  https://hydra.nixos.org/build/289348001/nixlog/1
-          inherit (pkgs.python3Packages) cnvkit;
+          # Another error on latest :
+          # https://github.com/apraga/reproducible-sarek-germline/issues/4
+          #  inherit (pkgs.python3Packages) cnvkit;
 
-          # wait for upstream PR to be merged
-          multiqc = pkgs.callPackage ./multiqc { }; 
           pyflow = pkgs.callPackage ./pyflow { };
           strelka = pkgs.callPackage ./strelka {
             inherit (self) pyflow;
