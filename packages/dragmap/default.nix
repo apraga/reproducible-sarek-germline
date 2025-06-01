@@ -2,6 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
+  fetchpatch,
   boost,
   gtest,
   zlib,
@@ -26,17 +27,34 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   patches = [
-    # pclose is called on a NULL value. This is no longer allowed since
-    #  https://github.com/bminor/glibc/commit/64b1a44183a3094672ed304532bedb9acc707554
-  #  ./stdio-pclose.patch
+    # Missing import in Mapper.cpp
+    # Issue opened upstream https://github.com/Illumina/DRAGMAP/pull/66
+    (fetchpatch {
+      url = "https://raw.githubusercontent.com/bioconda/bioconda-recipes/e9016f28e9676f35a624391c079b46336a196610/recipes/dragmap/boost.patch";
+      hash = "sha256-bpuNb3BBe0WZLUPJLC5gc+FZOojIrOeDI8fxMwF/SsE=";
+    })
 
     # Add missing include cstdint.  Upstream does not accept PR. Issue opened at
     # https://github.com/Illumina/DRAGMAP/issues/63
-    "https://github.com/bioconda/bioconda-recipes/blob/e9016f28e9676f35a624391c079b46336a196610/recipes/dragmap/cstdint.patch"
+    (fetchpatch {
+      url = "https://raw.githubusercontent.com/bioconda/bioconda-recipes/e9016f28e9676f35a624391c079b46336a196610/recipes/dragmap/cstdint.patch";
+      hash = "sha256-lnkPI895m7/4RA22GrMHleN7Xnzb9loq7nmV1zSpbSQ=";
+    })
+
+    (fetchpatch {
+      url = "https://raw.githubusercontent.com/bioconda/bioconda-recipes/e9016f28e9676f35a624391c079b46336a196610/recipes/dragmap/contigs.patch";
+      hash = "sha256-ZlrQXSbHtGYopemyMhy1ZsyrDP0VAq1g+plmQu/77dI=";
+    })
     
-    # Missing import in Mapper.cpp
-    # Issue opened upstream https://github.com/Illumina/DRAGMAP/pull/66
-    "https://github.com/bioconda/bioconda-recipes/blob/e9016f28e9676f35a624391c079b46336a196610/recipes/dragmap/boost.patch"
+    (fetchpatch {
+      url = "https://raw.githubusercontent.com/bioconda/bioconda-recipes/e9016f28e9676f35a624391c079b46336a196610/recipes/dragmap/overflow.patch";
+      hash = "sha256-6pXoBqVMWkSDm1/M2W3+uVdppgvVSK5cGqGeolsEgvg=";
+    })
+
+    # pclose is called on a NULL value. This is no longer allowed since
+    #  https://github.com/bminor/glibc/commit/64b1a44183a3094672ed304532bedb9acc707554
+    ./stdio-pclose.patch
+
   ];
 
   env = {
