@@ -28,7 +28,7 @@ stdenv.mkDerivation (finalAttrs: {
   patches = [
     # pclose is called on a NULL value. This is no longer allowed since
     #  https://github.com/bminor/glibc/commit/64b1a44183a3094672ed304532bedb9acc707554
-    ./stdio-pclose.patch
+  #  ./stdio-pclose.patch
 
     # Add missing include cstdint.  Upstream does not accept PR. Issue opened at
     # https://github.com/Illumina/DRAGMAP/issues/63
