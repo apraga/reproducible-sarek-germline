@@ -26,7 +26,7 @@
             bwa-mem2
             # TODO
             # deepvariant
-            dragmap
+            # dragmap # wait for fix
             fastp
             freebayes
             htslib
@@ -55,6 +55,7 @@
           strelka = pkgs.callPackage ./strelka {
             inherit (self) pyflow;
           };
+          dragmap = pkgs.callPackage ./dragmap { };
         });
 
         packages = {
