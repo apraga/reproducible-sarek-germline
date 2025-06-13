@@ -26,7 +26,7 @@
             bwa-mem2
             # TODO
             # deepvariant
-            dragmap
+            # dragmap # wait for fix
             fastp
             freebayes
             htslib
@@ -51,10 +51,13 @@
           # https://github.com/apraga/reproducible-sarek-germline/issues/4
           #  inherit (pkgs.python3Packages) cnvkit;
 
+
+          gatk = pkgs.callPackage ./gatk { }; # fix for gatk
           pyflow = pkgs.callPackage ./pyflow { };
           strelka = pkgs.callPackage ./strelka {
             inherit (self) pyflow;
           };
+          dragmap = pkgs.callPackage ./dragmap { };
         });
 
         packages = {
