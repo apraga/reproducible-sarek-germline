@@ -51,6 +51,8 @@
           # https://github.com/apraga/reproducible-sarek-germline/issues/4
           #  inherit (pkgs.python3Packages) cnvkit;
 
+
+          gatk = pkgs.callPackage ./gatk { }; # fix for gatk
           pyflow = pkgs.callPackage ./pyflow { };
           strelka = pkgs.callPackage ./strelka {
             inherit (self) pyflow;
