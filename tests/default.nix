@@ -1,0 +1,5 @@
+{
+  imports = [
+    ./nextflow-version.nix
+  ];
+}

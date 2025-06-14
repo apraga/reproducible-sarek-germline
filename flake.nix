@@ -29,6 +29,7 @@
         ./dev.nix
         ./packages
         ./shell.nix
+        ./tests
       ];
 
       perSystem =
