@@ -21,24 +21,25 @@
       config = {
         __dependencies = lib.fix (self: {
           inherit (pkgs)
+            fastqc
             bcftools
             bwa
             bwa-mem2
-            # TODO
-            # deepvariant
             dragmap
+            gatk
             fastp
             freebayes
             htslib
             # FIXME
             # manta
+            mosdepth
             multiqc
             nextflow
-            nf-test # Remove ?
             samtools
             snpeff
             tiddit
             vep
+            vcftools
 
             # Datalad
             datalad

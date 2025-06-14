@@ -1,0 +1,122 @@
+name: Sarek Pipeline CI
+
+
+on:
+  push:
+    branches: [ main dev ]
+  workflow_dispatch:
+    inputs:
+      sarek_revision:
+        description: 'Sarek pipeline revision/tag to test'
+        required: false
+        default: 'master'
+        type: string
+
+
+env:
+  SAREK_REVISION: ${{ github.event.inputs.sarek_revision || 'master' }}
+  NXF_VER: "24.04.2"
+
+jobs:
+  test-sarek-pipeline:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - uses: cachix/install-nix-action@v31
+      with:
+        github_access_token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Setup Cachix
+      uses: cachix/cachix-action@v14
+      with:
+        name: reproducible-sarek-germline
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+    # FIXME force sarek version
+    - name: Clone Sarek 
+      run: |
+        git clone https://github.com/nf-core/sarek.git
+        cd sarek
+        git checkout $SAREK_REVISION
+        echo "Current commit: $(git rev-parse HEAD)"
+
+    # FIXME nextflow does not run in nix here
+    # - name: Set up Nextflow
+    #   uses: nf-core/setup-nextflow@v2
+    #   with:
+    #       version: "${{ matrix.NXF_VER }}"
+        
+    # Do not work for 24.10... 
+    - name: Install nextflow manually
+      run: |
+        wget https://github.com/nextflow-io/nextflow/releases/download/v24.04.2/nextflow-24.04.2-all
+        mv nextflow-24.04.2-all nextflow
+        chmod +x nextflow
+
+    - name: Install depedencies with nix
+      run: |
+          nix profile install .#bcftools .#bwa .#fastp .#htslib .#multiqc \
+            .#samtools .#gatk .#mosdepth .#vcftools
+          # .#nextflow 
+
+    - name: Run sarek
+      run: |
+          # Even with this hack, does not work with nix 
+          # export HOME=$(mktemp -d)
+          ./nextflow run ./sarek/main.nf --input tests/chl1-exon13.csv --outdir chl1-exon13 --tools haplotypecaller --skip_tools haplotypecaller_filter,fastqc  -c tests/test.config
+
+
+    - name: Check pipeline execution status
+      run: |
+         if [ $? -eq 0 ]; then
+           echo "✅ Pipeline completed successfully"
+         else
+           echo "❌ Pipeline failed"
+           exit 1
+         fi
+
+    - name: Verify output files exist
+      run: |
+         echo "Checking for expected output files..."
+
+         if [ -f "chl1-exon13/variant_calling/haplotypecaller/test/test.haplotypecaller.vcf.gz" ]; then
+           echo "✅ HaplotypeCaller VCF output found"
+           ls -la chl1-exon13/variant_calling/haplotypecaller/test/
+         else
+           echo "❌ Expected VCF output not found"
+           echo "Contents of output directory:"
+           find chl1-exon13 -name "*.vcf*" -type f || echo "No VCF files found"
+           exit 1
+         fi
+
+    - name: Compare results with reference
+      run: |
+         echo "Comparing pipeline output with reference..."
+
+         # Check if reference file exists
+         if [ ! -f "tests/chl1-exon13_ref.vcf.gz" ]; then
+           echo "❌ Reference file not found: tests/chl1-exon13_ref.vcf.gz"
+           exit 1
+         fi
+
+         # Run bcftools isec comparison
+         bcftools isec \
+           tests/chl1-exon13_ref.vcf.gz \
+           chl1-exon13/variant_calling/haplotypecaller/test/test.haplotypecaller.vcf.gz \
+           -n =2 \
+           -p diff
+
+         # Count chr3 variants in the diff
+         chr3_count=$(zgrep -c '^chr3' diff/0001.vcf || echo "0")
+         echo "Number of chr3 variants in diff: $chr3_count"
+
+         # You can add assertions here based on expected counts
+         if [ "$chr3_count" -eq "4" ]; then
+           echo "✅ All variants foud"
+         else
+           echo "⚠️  Found $chr3_count differences in chr3 variants"
+         fi

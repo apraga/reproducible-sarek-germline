@@ -1,0 +1,2 @@
+patient,sex,status,sample,lane,fastq_1,fastq_2
+test,XX,0,test,chl1-exon13,tests/chl1-exon13_R1.fastq.gz,tests/chl1-exon13_R2.fastq.gz
