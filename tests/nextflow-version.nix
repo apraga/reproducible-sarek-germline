@@ -15,15 +15,21 @@
         let
           inherit (self'.packages) nextflow;
         in
-        pkgs.runCommand "nextflow-version" { } ''
-          # Nextflow needs to write in the user's home directory
-          export HOME=$(mktemp -d)
+        pkgs.runCommand "nextflow-version"
+          {
+            nativeBuildInputs = [
+              nextflow
+            ];
+          }
+          ''
+            # Nextflow needs to write in the user's home directory
+            export HOME=$(mktemp -d)
 
-          # Check that nextflow runs and outputs the correct version
-          ${lib.getExe nextflow} -version | grep "${nextflow.version}"
+            # Check that nextflow runs and outputs the correct version
+            nextflow -version | grep "${nextflow.version}"
 
-          # This is a derivation and it must produce an output
-          touch $out
-        '';
+            # This is a derivation and it must produce an output
+            touch $out
+          '';
     };
 }
