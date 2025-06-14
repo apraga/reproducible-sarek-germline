@@ -1,3 +1,7 @@
+/*
+  Simple test that runs `nextflow -version` and checks that the output contains the expected version
+  of nextflow.
+*/
 {
   perSystem =
     {
@@ -15,7 +19,7 @@
           # Nextflow needs to write in the user's home directory
           export HOME=$(mktemp -d)
 
-          # Check nextflow runs and outputs the correct version
+          # Check that nextflow runs and outputs the correct version
           ${lib.getExe nextflow} -version | grep "${nextflow.version}"
 
           # This is a derivation and it must produce an output
