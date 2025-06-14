@@ -2,5 +2,8 @@ result
 .direnv/
 *.*~
 .nf-test*
-*.bam
 .nextflow*
+.nextflow.log.*
+*.bam
+*.bai
+*.tbi

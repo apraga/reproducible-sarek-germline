@@ -60,37 +60,60 @@ jobs:
         mv nextflow-24.04.2-all nextflow
         chmod +x nextflow
 
-    - name: Install depedencies with nix
+    - name: Install dependencies with nix
       run: |
           nix profile install .#bcftools .#bwa .#fastp .#htslib .#multiqc \
-            .#samtools .#gatk .#mosdepth .#vcftools .#fastqc
+             .#samtools .#gatk .#mosdepth .#vcftools .#fastqc .#strelka \
+          .#freebayes .#bwa-mem2
           # .#nextflow
 
     # Use a small genome in git. Skip base recalibration as it needs dbsnp
-    - name: Run sarek
+    - name: Run sarek with bwa + {mpileup,haplotypecaller,freebayes,strelka}
       run:  |
-        ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir ada2-small  --tools mpileup  -c tests/test.config --skip_tools baserecalibrator
+        ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir bwa-varcall  --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
 
-    - name: Check pipeline execution status
-      run: |
-         if [ $? -eq 0 ]; then
-           echo "✅ Pipeline completed successfully"
-         else
-           echo "❌ Pipeline failed"
-           exit 1
-         fi
+    - name: Run sarek with bwa-mem2 + {mpileup,haplotypecaller,freebayes,strelka}
+      run:  |
+        ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir bwa-mem2-varcall --aligner bwa-mem2 --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
 
     - name: Compare results with reference
       run: |
-          bcftools isec tests/ada2-e5-e6_ref.vcf.gz \
-            ada2-small/variant_calling/bcftools/test/test.bcftools.vcf.gz \
-           -n =2 \
-           -p diff
+        aligners=("bwa" "bwa-mem2")
 
-          # Count chr22 variants in the diff
-          chr22_count=$(zgrep -c '^chr22' diff/0001.vcf || echo "0")
-          if [ "$chr22_count" -eq "2" ]; then
-            echo "✅ All variants foud"
-          else
-            echo "⚠️  Found $chr22_count differences in chr22 variants"
-          fi
+        reference_vcf="tests/ada2-e5-e6_ref.vcf.gz"
+        all_passed=true
+
+        for aligner in "${aligners[@]}"; do
+          echo "🧬 Testing with aligner: $aligner"
+
+          # Define variant callers and their corresponding VCF files for this aligner
+          declare -A variant_callers=(
+            ["bcftools"]="${aligner}-varcall/variant_calling/bcftools/test/test.bcftools.vcf.gz"
+            ["freebayes"]="${aligner}-varcall/variant_calling/freebayes/test/test.freebayes.vcf.gz"
+            ["haplotypecaller"]="${aligner}-varcall/variant_calling/haplotypecaller/test/test.haplotypecaller.vcf.gz"
+            ["strelka"]="${aligner}-varcall/variant_calling/strelka/test/test.strelka.variants.vcf.gz"
+          )
+
+          for caller in "${!variant_callers[@]}"; do
+            vcf_file="${variant_callers[$caller]}"
+            if [ ! -f "$vcf_file" ]; then
+              echo "❌ $caller ($aligner): VCF file not found: $vcf_file"
+              all_passed=false
+              continue
+            fi
+            diff_dir="diff_${caller}_${aligner}"
+            bcftools isec "$reference_vcf" "$vcf_file" -n =2 -p "$diff_dir"
+            chr22_count=$(zgrep -c '^chr22' "$diff_dir/0001.vcf")
+            if [ "$chr22_count" -eq "2" ]; then
+              echo "✅ $caller ($aligner): All variants found ($chr22_count chr22 variants)"
+            else
+              echo "⚠️  $caller ($aligner): Found $chr22_count differences in chr22 variants (expected 2)"
+              all_passed=false
+            fi
+          done
+          unset variant_callers  # Clean up for next iteration
+        done
+
+        [ "$all_passed" = true ]
+
+
