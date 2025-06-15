@@ -3,7 +3,10 @@ name: Sarek Pipeline CI
 
 on:
   push:
-    branches: [ main dev ]
+    branches: 
+    - main
+    - dev
+    - test-sarek
   workflow_dispatch:
     inputs:
       sarek_revision:
@@ -20,7 +23,7 @@ env:
 jobs:
   test-sarek-pipeline:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
     - name: Checkout repository
@@ -29,7 +32,7 @@ jobs:
     - uses: cachix/install-nix-action@v31
       with:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
-    
+
     - name: Setup Cachix
       uses: cachix/cachix-action@v14
       with:
@@ -37,7 +40,7 @@ jobs:
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
     # FIXME force sarek version
-    - name: Clone Sarek 
+    - name: Clone Sarek
       run: |
         git clone https://github.com/nf-core/sarek.git
         cd sarek
@@ -49,8 +52,8 @@ jobs:
     #   uses: nf-core/setup-nextflow@v2
     #   with:
     #       version: "${{ matrix.NXF_VER }}"
-        
-    # Do not work for 24.10... 
+
+    # Do not work for 24.10...
     - name: Install nextflow manually
       run: |
         wget https://github.com/nextflow-io/nextflow/releases/download/v24.04.2/nextflow-24.04.2-all
@@ -60,15 +63,13 @@ jobs:
     - name: Install depedencies with nix
       run: |
           nix profile install .#bcftools .#bwa .#fastp .#htslib .#multiqc \
-            .#samtools .#gatk .#mosdepth .#vcftools
-          # .#nextflow 
+            .#samtools .#gatk .#mosdepth .#vcftools .#fastqc
+          # .#nextflow
 
+    # Use a small genome in git. Skip base recalibration as it needs dbsnp
     - name: Run sarek
-      run: |
-          # Even with this hack, does not work with nix 
-          # export HOME=$(mktemp -d)
-          ./nextflow run ./sarek/main.nf --input tests/chl1-exon13.csv --outdir chl1-exon13 --tools haplotypecaller --skip_tools haplotypecaller_filter,fastqc  -c tests/test.config
-
+      run:  |
+        ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir ada2-small  --tools mpileup  -c tests/test.config --skip_tools baserecalibrator
 
     - name: Check pipeline execution status
       run: |
@@ -79,44 +80,17 @@ jobs:
            exit 1
          fi
 
-    - name: Verify output files exist
-      run: |
-         echo "Checking for expected output files..."
-
-         if [ -f "chl1-exon13/variant_calling/haplotypecaller/test/test.haplotypecaller.vcf.gz" ]; then
-           echo "✅ HaplotypeCaller VCF output found"
-           ls -la chl1-exon13/variant_calling/haplotypecaller/test/
-         else
-           echo "❌ Expected VCF output not found"
-           echo "Contents of output directory:"
-           find chl1-exon13 -name "*.vcf*" -type f || echo "No VCF files found"
-           exit 1
-         fi
-
     - name: Compare results with reference
       run: |
-         echo "Comparing pipeline output with reference..."
-
-         # Check if reference file exists
-         if [ ! -f "tests/chl1-exon13_ref.vcf.gz" ]; then
-           echo "❌ Reference file not found: tests/chl1-exon13_ref.vcf.gz"
-           exit 1
-         fi
-
-         # Run bcftools isec comparison
-         bcftools isec \
-           tests/chl1-exon13_ref.vcf.gz \
-           chl1-exon13/variant_calling/haplotypecaller/test/test.haplotypecaller.vcf.gz \
+          bcftools isec tests/ada2-e5-e6_ref.vcf.gz \
+            ada2-small/variant_calling/bcftools/test/test.bcftools.vcf.gz \
            -n =2 \
            -p diff
 
-         # Count chr3 variants in the diff
-         chr3_count=$(zgrep -c '^chr3' diff/0001.vcf || echo "0")
-         echo "Number of chr3 variants in diff: $chr3_count"
-
-         # You can add assertions here based on expected counts
-         if [ "$chr3_count" -eq "4" ]; then
-           echo "✅ All variants foud"
-         else
-           echo "⚠️  Found $chr3_count differences in chr3 variants"
-         fi
+          # Count chr22 variants in the diff
+          chr22_count=$(zgrep -c '^chr22' diff/0001.vcf || echo "0")
+          if [ "$chr22_count" -eq "2" ]; then
+            echo "✅ All variants foud"
+          else
+            echo "⚠️  Found $chr22_count differences in chr22 variants"
+          fi

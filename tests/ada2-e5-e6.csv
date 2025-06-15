@@ -1,0 +1,2 @@
+patient,sex,status,sample,lane,fastq_1,fastq_2
+test,XX,0,test,ada2-e5-e6,tests/ada2-e5-e6_R1.fastq.gz,tests/ada2-e5-e6_R2.fastq.gz
