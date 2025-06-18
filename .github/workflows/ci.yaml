@@ -6,7 +6,6 @@ on:
     branches: 
     - main
     - dev
-    - test-sarek
   workflow_dispatch:
     inputs:
       sarek_revision:
@@ -64,7 +63,7 @@ jobs:
       run: |
           nix profile install .#bcftools .#bwa .#fastp .#htslib .#multiqc \
              .#samtools .#gatk .#mosdepth .#vcftools .#fastqc .#strelka \
-          .#freebayes .#bwa-mem2
+          .#freebayes .#bwa-mem2 .#dragmap
           # .#nextflow
 
     # Use a small genome in git. Skip base recalibration as it needs dbsnp
@@ -76,9 +75,13 @@ jobs:
       run:  |
         ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir bwa-mem2-varcall --aligner bwa-mem2 --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
 
+    - name: Run sarek with dragmap + {mpileup,haplotypecaller,freebayes,strelka}
+      run:  |
+        ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir dragmap-varcall --aligner dragmap --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
+
     - name: Compare results with reference
       run: |
-        aligners=("bwa" "bwa-mem2")
+        aligners=("bwa" "bwa-mem2" "dragmap")
 
         reference_vcf="tests/ada2-e5-e6_ref.vcf.gz"
         all_passed=true

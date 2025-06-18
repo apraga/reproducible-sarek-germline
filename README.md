@@ -1,4 +1,5 @@
-![CI check](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/nix-flake.yml/badge.svg)
+![Builds](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/nix-flake.yml/badge.svg)
+![SNV calling](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/nix-flake.yml/badge.svg)
 
 This repository offers a reproducible, hassle-free environment to analyze
 germline exome or genomic data. In practice, it provides the tools to run
@@ -34,7 +35,7 @@ Current version (v0.1) has been tested with:
 
 | Step        | Available                      | Not yet available           |
 | ----------- | ------------------------------ | --------------------------- |
-| Alignment   | bwa, **bwa-mem2**              | dragmap                     |
+| Alignment   | bwa, **bwa-mem2**, dragmap     |                             |
 | SNV calling | samtools, freebayes, strelka2, |                             |
 |             | **haplotypecaller** (\*)       |                             |
 | CNV calling |                                | cnvkit                      |
