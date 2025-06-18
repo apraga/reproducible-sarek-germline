@@ -1,5 +1,4 @@
-name: Sarek Pipeline CI
-
+name: SNV calling with sarek 
 
 on:
   push:

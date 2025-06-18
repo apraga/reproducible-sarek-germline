@@ -1,5 +1,5 @@
 ![Builds](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/nix-flake.yml/badge.svg)
-![SNV calling](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/nix-flake.yml/badge.svg)
+![SNV calling](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/snv-calling.yml/badge.svg)
 
 This repository offers a reproducible, hassle-free environment to analyze
 germline exome or genomic data. In practice, it provides the tools to run
