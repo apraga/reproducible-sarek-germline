@@ -50,7 +50,13 @@
           #  https://hydra.nixos.org/build/289348001/nixlog/1
           # Another error on latest :
           # https://github.com/apraga/reproducible-sarek-germline/issues/4
-          #  inherit (pkgs.python3Packages) cnvkit;
+          #inherit (pkgs.python3Packages) cnvkit;
+          pomegranate = pkgs.callPackage ./pomegranate { };
+          cnvkit = (pkgs.python3.override {
+            packageOverrides = python-self: python-super: {
+              pomegranate = self.pomegranate;
+            };
+          }).pkgs.cnvkit;
 
           pyflow = pkgs.callPackage ./pyflow { };
           strelka = pkgs.callPackage ./strelka {

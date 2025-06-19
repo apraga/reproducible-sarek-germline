@@ -1,0 +1,182 @@
+diff --git a/tests/distributions/test_bernoulli.py b/tests/distributions/test_bernoulli.py
+index 8bf41b1..8d2b194 100644
+--- a/tests/distributions/test_bernoulli.py
++++ b/tests/distributions/test_bernoulli.py
+@@ -722,7 +722,7 @@ def test_serialization(X):
+ 	assert_array_almost_equal(d._log_probs, numpy.log(probs))
+ 
+ 	torch.save(d, ".pytest.torch")
+-	d2 = torch.load(".pytest.torch")
++	d2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert_array_almost_equal(d2.probs, probs)
+diff --git a/tests/distributions/test_categorical.py b/tests/distributions/test_categorical.py
+index bb31a9d..42481a7 100644
+--- a/tests/distributions/test_categorical.py
++++ b/tests/distributions/test_categorical.py
+@@ -804,7 +804,7 @@ def test_serialization(X):
+ 	assert_array_almost_equal(d._log_probs, numpy.log(p))
+ 
+ 	torch.save(d, ".pytest.torch")
+-	d2 = torch.load(".pytest.torch")
++	d2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert_array_almost_equal(d2.probs, p)
+diff --git a/tests/distributions/test_dirac_delta.py b/tests/distributions/test_dirac_delta.py
+index 9cab7e3..0c505d7 100644
+--- a/tests/distributions/test_dirac_delta.py
++++ b/tests/distributions/test_dirac_delta.py
+@@ -563,7 +563,7 @@ def test_serialization():
+ 	assert_array_almost_equal(d._log_alphas, numpy.log([1., 1., 2.]))
+ 
+ 	torch.save(d, ".pytest.torch")
+-	d2 = torch.load(".pytest.torch")
++	d2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert_array_almost_equal(d2.alphas, [1., 1., 2.])
+diff --git a/tests/distributions/test_exponential.py b/tests/distributions/test_exponential.py
+index db0bc44..b816126 100644
+--- a/tests/distributions/test_exponential.py
++++ b/tests/distributions/test_exponential.py
+@@ -859,7 +859,7 @@ def test_serialization(X):
+ 	assert_array_almost_equal(d._log_scales, numpy.log(scales))
+ 
+ 	torch.save(d, ".pytest.torch")
+-	d2 = torch.load(".pytest.torch")
++	d2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert_array_almost_equal(d2.scales, scales)
+diff --git a/tests/distributions/test_gamma.py b/tests/distributions/test_gamma.py
+index f4b0619..28f0ab7 100644
+--- a/tests/distributions/test_gamma.py
++++ b/tests/distributions/test_gamma.py
+@@ -1031,7 +1031,7 @@ def test_serialization(X):
+ 	assert_array_almost_equal(d._log_rates, numpy.log(rates), 4)
+ 
+ 	torch.save(d, ".pytest.torch")
+-	d2 = torch.load(".pytest.torch")
++	d2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert_array_almost_equal(d2.rates, rates, 4)
+diff --git a/tests/distributions/test_independent_component.py b/tests/distributions/test_independent_component.py
+index 9bd3266..d1e3502 100644
+--- a/tests/distributions/test_independent_component.py
++++ b/tests/distributions/test_independent_component.py
+@@ -490,7 +490,7 @@ def test_serialization(X, distributions):
+ 	assert_array_almost_equal(d.distributions[2]._xw_sum, [[2.0, 2.0]])
+ 
+ 	torch.save(d, ".pytest.torch")
+-	d2 = torch.load(".pytest.torch")
++	d2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert_array_almost_equal(d2.distributions[0]._w_sum, [4.0])
+diff --git a/tests/distributions/test_normal_diagonal.py b/tests/distributions/test_normal_diagonal.py
+index bdd39c0..b8c5e11 100644
+--- a/tests/distributions/test_normal_diagonal.py
++++ b/tests/distributions/test_normal_diagonal.py
+@@ -982,7 +982,7 @@ def test_serialization(X):
+ 	assert_array_almost_equal(d.covs, covs)
+ 
+ 	torch.save(d, ".pytest.torch")
+-	d2 = torch.load(".pytest.torch")
++	d2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert_array_almost_equal(d2.means, means)
+diff --git a/tests/distributions/test_normal_full.py b/tests/distributions/test_normal_full.py
+index 823521d..199ab2c 100644
+--- a/tests/distributions/test_normal_full.py
++++ b/tests/distributions/test_normal_full.py
+@@ -876,7 +876,7 @@ def test_serialization(X):
+ 	assert_array_almost_equal(d.covs, covs)
+ 
+ 	torch.save(d, ".pytest.torch")
+-	d2 = torch.load(".pytest.torch")
++	d2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert_array_almost_equal(d2.means, means)
+diff --git a/tests/distributions/test_poisson.py b/tests/distributions/test_poisson.py
+index e5562b6..2283955 100644
+--- a/tests/distributions/test_poisson.py
++++ b/tests/distributions/test_poisson.py
+@@ -845,7 +845,7 @@ def test_serialization(X):
+ 	assert_array_almost_equal(d._log_lambdas, numpy.log(lambdas))
+ 
+ 	torch.save(d, ".pytest.torch")
+-	d2 = torch.load(".pytest.torch")
++	d2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert_array_almost_equal(d2.lambdas, lambdas)
+diff --git a/tests/distributions/test_student_t.py b/tests/distributions/test_student_t.py
+index a6ceae5..64aca3b 100644
+--- a/tests/distributions/test_student_t.py
++++ b/tests/distributions/test_student_t.py
+@@ -1002,7 +1002,7 @@ def test_serialization(X):
+ 	assert_array_almost_equal(d.covs, covs)
+ 
+ 	torch.save(d, ".pytest.torch")
+-	d2 = torch.load(".pytest.torch")
++	d2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert_array_almost_equal(d2.means, means)
+diff --git a/tests/distributions/test_uniform.py b/tests/distributions/test_uniform.py
+index d7bab5e..fd64d9f 100644
+--- a/tests/distributions/test_uniform.py
++++ b/tests/distributions/test_uniform.py
+@@ -868,7 +868,7 @@ def test_serialization(X):
+ 	assert_array_almost_equal(d.maxs, [3.1, 2.1, 2.2])
+ 
+ 	torch.save(d, ".pytest.torch")
+-	d2 = torch.load(".pytest.torch")
++	d2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert_array_almost_equal(d2.mins, [0.5, 0.2, 0.5])
+diff --git a/tests/test_bayes_classifier.py b/tests/test_bayes_classifier.py
+index d35043e..7b7ae18 100644
+--- a/tests/test_bayes_classifier.py
++++ b/tests/test_bayes_classifier.py
+@@ -615,7 +615,7 @@ def test_fit_raises(model, X, w, y):
+ 
+ def test_serialization(X, model):
+ 	torch.save(model, ".pytest.torch")
+-	model2 = torch.load(".pytest.torch")
++	model2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert_array_almost_equal(model2.priors, model.priors)
+diff --git a/tests/test_gmm.py b/tests/test_gmm.py
+index ee4c441..c01a2d2 100644
+--- a/tests/test_gmm.py
++++ b/tests/test_gmm.py
+@@ -538,7 +538,7 @@ def test_fit_raises(model, X, w):
+ 
+ def test_serialization(X, model):
+ 	torch.save(model, ".pytest.torch")
+-	model2 = torch.load(".pytest.torch")
++	model2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert_array_almost_equal(model2.priors, model.priors)
+diff --git a/tests/test_kmeans.py b/tests/test_kmeans.py
+index 87e2476..9493a8f 100644
+--- a/tests/test_kmeans.py
++++ b/tests/test_kmeans.py
+@@ -362,7 +362,7 @@ def test_fit_raises(model, X, w):
+ 
+ def test_serialization(X, model):
+ 	torch.save(model, ".pytest.torch")
+-	model2 = torch.load(".pytest.torch")
++	model2 = torch.load(".pytest.torch",weights_only=False)
+ 	os.system("rm .pytest.torch")
+ 
+ 	assert model is not model2
