@@ -37,7 +37,7 @@
             nextflow
             samtools
             snpeff
-            tiddit
+            #tiddit
             vep
             vcftools
 
@@ -48,6 +48,8 @@
 
           #inherit (pkgs.python3Packages) cnvkit;
           cnvkit = pkgs.callPackage ./cnvkit { };
+          tiddit = pkgs.callPackage ./tiddit { };
+
 
           pyflow = pkgs.callPackage ./pyflow { };
           strelka = pkgs.callPackage ./strelka {
