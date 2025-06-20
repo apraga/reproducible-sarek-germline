@@ -47,7 +47,7 @@
             ;
 
           #inherit (pkgs.python3Packages) cnvkit;
-          cnvkit = pkgs.callPackage ./cnvkit {};
+          cnvkit = pkgs.callPackage ./cnvkit { };
 
           pyflow = pkgs.callPackage ./pyflow { };
           strelka = pkgs.callPackage ./strelka {
