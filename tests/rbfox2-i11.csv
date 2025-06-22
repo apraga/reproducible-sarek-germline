@@ -1,0 +1,2 @@
+patient,sex,status,sample,lane,fastq_1,fastq_2
+test,XX,0,test,rbfox2-i11,tests/rbfox2-i11_R1.fastq.gz,tests/rbfox2-i11_R2.fastq.gz

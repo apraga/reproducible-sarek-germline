@@ -21,13 +21,13 @@
       config = {
         __dependencies = lib.fix (self: {
           inherit (pkgs)
-            fastqc
             bcftools
             bwa
             bwa-mem2
             dragmap
             gatk
             fastp
+            fastqc
             freebayes
             htslib
             # FIXME
@@ -37,7 +37,6 @@
             nextflow
             samtools
             snpeff
-            #tiddit
             vep
             vcftools
 
@@ -49,7 +48,6 @@
           #inherit (pkgs.python3Packages) cnvkit;
           cnvkit = pkgs.callPackage ./cnvkit { };
           tiddit = pkgs.callPackage ./tiddit { };
-
 
           pyflow = pkgs.callPackage ./pyflow { };
           strelka = pkgs.callPackage ./strelka {

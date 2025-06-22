@@ -1,8 +1,9 @@
-name: SNV calling with sarek 
+name: Minimal variant calling with sarek 
 
 on:
   push:
     branches: 
+    - test-sarek
     - main
     - dev
   workflow_dispatch:
@@ -46,11 +47,6 @@ jobs:
         echo "Current commit: $(git rev-parse HEAD)"
 
     # FIXME nextflow does not run in nix here
-    # - name: Set up Nextflow
-    #   uses: nf-core/setup-nextflow@v2
-    #   with:
-    #       version: "${{ matrix.NXF_VER }}"
-
     # Do not work for 24.10...
     - name: Install nextflow manually
       run: |
@@ -58,27 +54,25 @@ jobs:
         mv nextflow-24.04.2-all nextflow
         chmod +x nextflow
 
-    - name: Install dependencies with nix
+    - name: Install dependencies with nix (with cachix)
       run: |
-          nix profile install .#bcftools .#bwa .#fastp .#htslib .#multiqc \
-             .#samtools .#gatk .#mosdepth .#vcftools .#fastqc .#strelka \
-          .#freebayes .#bwa-mem2 .#dragmap
-          # .#nextflow
+        cachix use reproducible-sarek-germline
+        nix profile install . | cachix push reproducible-sarek-germline
 
-    # Use a small genome in git. Skip base recalibration as it needs dbsnp
-    - name: Run sarek with bwa + {mpileup,haplotypecaller,freebayes,strelka}
+        # Use a small genome in git. Skip base recalibration as it needs dbsnp
+    - name: SNV calling with bwa + {mpileup,haplotypecaller,freebayes,strelka}
       run:  |
-        ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir bwa-varcall  --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
+         ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir bwa-varcall  --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
 
-    - name: Run sarek with bwa-mem2 + {mpileup,haplotypecaller,freebayes,strelka}
+    - name: SNV calling with bwa-mem2 + {mpileup,haplotypecaller,freebayes,strelka}
       run:  |
         ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir bwa-mem2-varcall --aligner bwa-mem2 --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
 
-    - name: Run sarek with dragmap + {mpileup,haplotypecaller,freebayes,strelka}
+    - name: SNV calling with dragmap + {mpileup,haplotypecaller,freebayes,strelka}
       run:  |
         ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir dragmap-varcall --aligner dragmap --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
 
-    - name: Compare results with reference
+    - name: SNV calling check 
       run: |
         aligners=("bwa" "bwa-mem2" "dragmap")
 
@@ -117,5 +111,24 @@ jobs:
         done
 
         [ "$all_passed" = true ]
+   
+    - name: CNV calling with bwa + tiddit
+      run:  |
+        ./nextflow run sarek/main.nf --input tests/rbfox2-i11.csv --outdir test-cnv  --tools tiddit  -c tests/test.config  --skip_tools baserecalibrator
+
+    - name: Check CNV calling 
+      run: |
+        # expected "chr22 35737479 DEL 720"
+        res=$(bcftools query -i 'POS=35737479 && INFO/SVTYPE="DEL" && abs(INFO/SVLEN)=720'     -f '%CHROM %POS %INFO/SVTYPE %INFO/SVLEN\n'     test-cnv/variant_calling/tiddit/test/test.tiddit.vcf.gz | wc -l)
+
+        if [ $res == 1 ]; then
+          echo "✓ Test PASSED: deletion found"
+          exit 0
+        else
+          echo "✗ Test FAILED: Output does not match"
+          zcat test-cnv/variant_calling/tiddit/test/test.tiddit.vcf.gz
+          exit 1
+        fi
+
 
 
