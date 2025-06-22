@@ -1,4 +1,4 @@
-name: SNV calling with sarek 
+name: Minimal variant calling with sarek 
 
 on:
   push:
@@ -66,19 +66,19 @@ jobs:
           # .#nextflow
 
     # Use a small genome in git. Skip base recalibration as it needs dbsnp
-    - name: Run sarek with bwa + {mpileup,haplotypecaller,freebayes,strelka}
+    - name: SNV calling with bwa + {mpileup,haplotypecaller,freebayes,strelka}
       run:  |
         ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir bwa-varcall  --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
 
-    - name: Run sarek with bwa-mem2 + {mpileup,haplotypecaller,freebayes,strelka}
+    - name: SNV calling with bwa-mem2 + {mpileup,haplotypecaller,freebayes,strelka}
       run:  |
         ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir bwa-mem2-varcall --aligner bwa-mem2 --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
 
-    - name: Run sarek with dragmap + {mpileup,haplotypecaller,freebayes,strelka}
+    - name: SNV calling with dragmap + {mpileup,haplotypecaller,freebayes,strelka}
       run:  |
         ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir dragmap-varcall --aligner dragmap --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
 
-    - name: Compare results with reference
+    - name: SNV calling check 
       run: |
         aligners=("bwa" "bwa-mem2" "dragmap")
 
@@ -117,5 +117,24 @@ jobs:
         done
 
         [ "$all_passed" = true ]
+
+    - name: CNV calling with bwa + tiddit
+      run:  |
+        ./nextflow run sarek/main.nf --input tests/rbfox2-i11.csv --outdir test-cnv  --tools tiddit  -c tests/test.config  --skip_tools baserecalibrator
+
+    - name: Check CNV calling 
+      run: |
+        expected="chr22 POS SV_1_1 DEL 720"
+        res=$(bcftools query -i 'POS=35737479 && INFO/SVTYPE="DEL" && abs(INFO/SVLEN)=720'     -f '%CHROM POS %ID %INFO/SVTYPE %INFO/SVLEN\n'     test-cnv/variant_calling/tiddit/test/test.tiddit.vcf.gz)
+        if [ "$expected" != "$res" ]
+          echo "✓ Test PASSED: deletion found"
+          exit 0
+        else
+          echo "✗ Test FAILED: Output does not match"
+          echo "Expected: $expected"
+          echo "Got $actual"
+          exit 1
+        fi
+
 
 
