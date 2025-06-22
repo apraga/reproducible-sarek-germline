@@ -10,14 +10,14 @@ by
 2. install datasets needed for variant calling, annotation and filter with
    [datalad](https://www.datalad.org/)
 
-With 2 simple commandes, the pipeline is ready to be run. No need for Docker or
+With 3 steps, the pipeline is ready to be run. No need for Docker or
 Singularity, or Conda !
 
 ## Quickstart
 
 1. Install all dependencies in a shell: `nix develop`
-2. Install datasets in the current directory : `cd dgenomes ; datalad get \*`
-3. Run sarek. For example, call SNV with `bwa` and `strelka`:
+2. Install datasets in the current directory : `datalad clone https://github.com/apraga/dgenomes  ; cd dgenomes ; datalad get genome_human ; gunzip genome_human/GCA*.fna.gz`
+3. Call SNV with `bwa` and `strelka` on a minimal example with:
 
 ```bash
 nextflow run sarek/main.nf --input tests/ada1-e5-e6.csv --outdir bwa-varcall  --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
