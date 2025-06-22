@@ -30,8 +30,6 @@
             fastp
             freebayes
             htslib
-            # FIXME
-            # manta
             mosdepth
             multiqc
             nextflow
@@ -46,9 +44,12 @@
             git-annex
             ;
 
-          #inherit (pkgs.python3Packages) cnvkit;
+         # TODO contribute to nixpkgs
           cnvkit = pkgs.callPackage ./cnvkit { };
+         # TODO contribute to nixpkgs
           tiddit = pkgs.callPackage ./tiddit { };
+
+          manta = pkgs.callPackage ./manta{ };
 
 
           pyflow = pkgs.callPackage ./pyflow { };

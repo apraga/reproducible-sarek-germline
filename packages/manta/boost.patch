@@ -1,0 +1,10 @@
+--- a/redist/boost_1_56_0/tools/build/v2/engine/modules/path.c
++++ b/redist/boost_1_56_0/tools/build/v2/engine/modules/path.c
+@@ -7,6 +7,7 @@
+ 
+ #include "../lists.h"
+ #include "../object.h"
++#include "../filesys.h"
+ 
+ LIST * path_exists( FRAME * frame, int flags )
+ {
