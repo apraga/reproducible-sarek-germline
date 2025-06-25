@@ -43,12 +43,13 @@
             git-annex
             ;
 
-         # TODO contribute to nixpkgs
+          # TODO contribute to nixpkgs
           cnvkit = pkgs.callPackage ./cnvkit { };
-         # TODO contribute to nixpkgs
+          # TODO contribute to nixpkgs
           tiddit = pkgs.callPackage ./tiddit { };
-          manta = pkgs.callPackage ./manta{ };
 
+          # Python 2, not supported by nixpkgs
+          manta = pkgs.callPackage ./manta { };
           pyflow = pkgs.callPackage ./pyflow { };
           strelka = pkgs.callPackage ./strelka {
             inherit (self) pyflow;

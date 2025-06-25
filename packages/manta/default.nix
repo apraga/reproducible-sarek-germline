@@ -17,10 +17,10 @@ stdenv.mkDerivation rec {
     rev = "v${version}";
     sha256 = "1711xkcw8rpw9xv3bbm7v1aryjz4r341rkq5255192dg38sgq7w2";
   };
-#rpatches = [ ./boost.patch ] ;
-#/Home/Users/apraga/source/build/bootstrap/boost/build/boost_1_58_0/tools/build/src/engine/modules/path.c
-# Fix the implicit function declaration error in boost bootstrap
- # Fix GCC 14 compatibility - different flags for boost vs manta
+  #rpatches = [ ./boost.patch ] ;
+  #/Home/Users/apraga/source/build/bootstrap/boost/build/boost_1_58_0/tools/build/src/engine/modules/path.c
+  # Fix the implicit function declaration error in boost bootstrap
+  # Fix GCC 14 compatibility - different flags for boost vs manta
   preConfigure = ''
     # For boost bootstrap phase - only fix the implicit function declaration
     export CFLAGS="-Wno-error=implicit-function-declaration -std=gnu17"
@@ -41,7 +41,7 @@ stdenv.mkDerivation rec {
   #   # For boost configure with this toolchain
   #   #export CFLAGS="-Wno-error=implicit-function-declaration -std=gnu17"
   #   #export CXXFLAGS="-Wno-error=implicit-function-declaration -std=gnu++17"
-  #   # Disable gcc14 (?) errors 
+  #   # Disable gcc14 (?) errors
   #   #export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -Wno-error=implicit-function-declaration -Wno-error=array-bounds -Wno-error=alloc-size-larger-than= -Wno-error=vla-larger-than="
   #   #
   #   # Cannot disable the last error so remove everythin

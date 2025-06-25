@@ -62,7 +62,7 @@ jobs:
     # Use a small genome in git. Skip base recalibration as it needs dbsnp
     - name: SNV calling with bwa + {mpileup,haplotypecaller,freebayes,strelka}
       run:  |
-         ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir bwa-varcall  --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
+        ./nextflow run sarek/main.nf --input tests/ada2-e5-e6.csv --outdir bwa-varcall  --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
 
     - name: SNV calling with bwa-mem2 + {mpileup,haplotypecaller,freebayes,strelka}
       run:  |
@@ -112,41 +112,28 @@ jobs:
 
         [ "$all_passed" = true ]
 
-    - name: CNV calling with bwa + tiddit
+    - name: CNV calling with bwa + {tiddit,manta}
       run:  |
-        ./nextflow run sarek/main.nf --input tests/rbfox2-i11.csv --outdir test-cnv  --tools tiddit  -c tests/test.config  --skip_tools baserecalibrator
+        ./nextflow run sarek/main.nf --input tests/rbfox2-i11.csv --outdir test-cnv  --tools tiddit,manta  -c tests/test.config  --skip_tools baserecalibrator
 
     - name: Check CNV calling
       run: |
         # expected "chr22 35737479 DEL 720"
-        res=$(bcftools query -i 'POS=35737479 && INFO/SVTYPE="DEL" && abs(INFO/SVLEN)=720'     -f '%CHROM %POS %INFO/SVTYPE %INFO/SVLEN\n'     test-cnv/variant_calling/tiddit/test/test.tiddit.vcf.gz | wc -l)
-
-        if [ $res == 1 ]; then
+        res_tiddit=$(bcftools query -i 'POS=35737479 && INFO/SVTYPE="DEL" && abs(INFO/SVLEN)=720'     -f '%CHROM %POS %INFO/SVTYPE %INFO/SVLEN\n'     test-cnv/variant_calling/tiddit/test/test.tiddit.vcf.gz | wc -l)
+        res_manta=$(bcftools query -i 'POS=35737460 && INFO/SVTYPE="DEL" && abs(INFO/SVLEN)=766'     -f '%CHROM %POS %INFO/SVTYPE %INFO/SVLEN\n'     test-cnv/variant_calling/manta/test/test.manta.diploid_sv.vcf.gz | wc -l)
+        if [ $res_tiddit -eq 1 ] && [ $res_manta -eq 1 ]; then
           echo "✓ Test PASSED: deletion found"
           exit 0
         else
-          echo "✗ Test FAILED: Output does not match"
-          zcat test-cnv/variant_calling/tiddit/test/test.tiddit.vcf.gz
+          if [ $res_tiddit -ne 1; then
+            echo "✗ Test FAILED (tiddit): Output does not match"
+            zcat test-cnv/variant_calling/tiddit/test/test.tiddit.vcf.gz
+          else
+            echo "✗ Test FAILED (manta): Output does not match"
+            zcat test-cnv/variant_calling/manta/test/test.manta.diploid_sv.vcf.gz
+          fi
           exit 1
-        fi
 
-
-    - name: CNV calling with bwa + tiddit
-      run:  |
-        ./nextflow run sarek/main.nf --input tests/rbfox2-i11.csv --outdir test-cnv  --tools tiddit  -c tests/test.config  --skip_tools baserecalibrator
-
-    - name: Check CNV calling
-      run: |
-        expected="chr22 POS SV_1_1 DEL 720"
-        res=$(bcftools query -i 'POS=35737479 && INFO/SVTYPE="DEL" && abs(INFO/SVLEN)=720'     -f '%CHROM POS %ID %INFO/SVTYPE %INFO/SVLEN\n'     test-cnv/variant_calling/tiddit/test/test.tiddit.vcf.gz)
-        if [ "$expected" != "$res" ]
-          echo "✓ Test PASSED: deletion found"
-          exit 0
-        else
-          echo "✗ Test FAILED: Output does not match"
-          echo "Expected: $expected"
-          echo "Got $actual"
-          exit 1
         fi
 
 

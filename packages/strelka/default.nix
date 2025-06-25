@@ -109,6 +109,23 @@ stdenv.mkDerivation (finalAttrs: {
     CXXFLAGS = "-I${htslib}/include -I${rapidjson}/include";
     LDFLAGS = "-L${htslib}/lib -lhts";
   };
+  postInstall = ''
+    # Avoid conflict with manta
+     mkdir -p $out/strelka 
+     mv $out/lib $out/strelka/lib 
+     mv $out/share $out/strelka/share 
+     mv $out/libexec $out/strelka/libexec 
+
+     # Fix Strelka paths
+     for binary in configureStrelkaGermlineWorkflow.py configureStrelkaSomaticWorkflow.py; do
+        sed -i 's|@THIS_RELATIVE_PYTHON_LIBDIR@|../strelka/lib/python|g' "$out/bin/$binary"
+        sed -i 's|join(scriptDir,"\.\./lib/python")|join(scriptDir,"../strelka/lib/python")|g' "$out/bin/$binary"
+     done
+
+     for binary in configureStrelkaGermlineWorkflow.py configureStrelkaSomaticWorkflow.py runStrelkaGermlineWorkflowDemo.bash runStrelkaSomaticWorkflowDemo.bash; do
+       sed -i 's|\.\./share|../strelka/share|g' "$out/bin/$binary"
+     done
+  '';
 
   meta = {
     description = "Germline and small variant caller";
