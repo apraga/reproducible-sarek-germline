@@ -1,0 +1,56 @@
+name: Test annotation
+
+on: workflow_dispatch
+
+jobs:
+  test-snpeff:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - uses: cachix/install-nix-action@v31
+      with:
+        github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup Cachix
+      uses: cachix/cachix-action@v14
+      with:
+        name: reproducible-sarek-germline
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+    - name: Install dependencies with nix (with cachix)
+      run: |
+        cachix use reproducible-sarek-germline
+        nix profile install .#snpeff  .#bcftools
+ 
+    - name: Download snpeff cache
+      run: |
+        wget http://downloads.sourceforge.net/project/snpeff/databases/v4_3/snpEff_v4_3_GRCh38.86.zip
+        unzip snpEff_v4_3_GRCh38.86.zip
+
+    - name: Run snpeff
+      run: snpeff -v -datadir "$(pwd)/data" GRCh38.86 tests/ada2-e5-e6_ref.vcf.gz > tests/ada2-e5-e6_annot.vcf
+
+    - name: Check VCF is annotated
+      run: |
+        # Set the VCF file path (adjust this to your actual file path)
+        VCF_FILE="tests/ada2-e5-e6_annot.vcf"
+        
+        # Count variant records (excluding header lines)
+        VARIANT_COUNT=$(bcftools view -H "$VCF_FILE" | wc -l)
+        if [ "$VARIANT_COUNT" -ne 2 ]; then
+          echo "❌ ERROR: Expected exactly 2 variant record, but found $VARIANT_COUNT records"
+          exit 1
+        fi
+        
+        # Extract INFO field and check for ANN
+        ANN_FIELD=$(bcftools query -f '%INFO/ANN\n' "$VCF_FILE")
+        if [ -z "$ANN_FIELD" ] || [ "$ANN_FIELD" = "." ]; then
+          echo "❌ ERROR: ANN field is missing or empty"
+          exit 1
+        fi
+        
+        echo "✓  File has exactly 2 variant record"
+        echo "✓  ANN field exists"

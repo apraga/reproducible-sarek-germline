@@ -3,7 +3,6 @@ name: Minimal variant calling with sarek
 on:
   push:
     branches:
-    - test-sarek
     - main
     - dev
   workflow_dispatch:
