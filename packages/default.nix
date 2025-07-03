@@ -34,7 +34,6 @@
             multiqc
             nextflow
             samtools
-            snpeff
             vep
             vcftools
 
@@ -47,6 +46,8 @@
           cnvkit = pkgs.callPackage ./cnvkit { };
           # TODO contribute to nixpkgs
           tiddit = pkgs.callPackage ./tiddit { };
+          # TODO contribute to nixpkgs
+          snpeff = pkgs.callPackage ./snpeff { };
 
           # Python 2, not supported by nixpkgs
           manta = pkgs.callPackage ./manta { };
