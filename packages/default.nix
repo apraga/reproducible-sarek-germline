@@ -32,7 +32,6 @@
             htslib
             mosdepth
             multiqc
-            nextflow
             samtools
             vep
             vcftools
@@ -48,6 +47,8 @@
           tiddit = pkgs.callPackage ./tiddit { };
           # TODO contribute to nixpkgs
           snpeff = pkgs.callPackage ./snpeff { };
+          # TODO contribute to nixpkgs
+          nextflow = pkgs.callPackage ./nexflow { };
 
           # Python 2, not supported by nixpkgs
           manta = pkgs.callPackage ./manta { };
