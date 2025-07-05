@@ -27,7 +27,7 @@ nextflow run sarek/main.nf --input tests/ada1-e5-e6.csv --outdir bwa-varcall  --
 ```
 
 More information about
-[can be found here](https://alexis.praga.dev/reproducible-sarek-germline/tutorials).
+[can be found here](https://alexis.praga.dev/reproducible-sarek-germline/tutorial).
 
 ## Documentation
 
