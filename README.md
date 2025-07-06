@@ -1,5 +1,6 @@
 ![Builds](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/nix-flake.yml/badge.svg)
-![SNV calling](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/snv-calling.yml/badge.svg)
+![Variant calling](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/variant-calling.yml/badge.svg)
+![Annotation](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/annotation.yml/badge.svg)
 
 This repository offers a reproducible, hassle-free environment to analyze
 germline exome or genomic data. In practice, it provides the tools to run
@@ -16,7 +17,8 @@ Singularity, or Conda !
 ## Quickstart
 
 1. Install all dependencies in a shell: `nix develop`
-2. Install datasets in the current directory : `datalad clone https://github.com/apraga/dgenomes  ; cd dgenomes ; datalad get genome_human ; gunzip genome_human/GCA*.fna.gz`
+2. Install datasets in the current directory :
+   `datalad clone https://github.com/apraga/dgenomes  ; cd dgenomes ; datalad get genome_human ; gunzip genome_human/GCA*.fna.gz`
 3. Call SNV with `bwa` and `strelka` on a minimal example with:
 
 ```bash
@@ -24,8 +26,8 @@ nextflow run sarek/main.nf --input tests/ada1-e5-e6.csv --outdir bwa-varcall  --
 
 ```
 
-More information about running sarek
-[can be found here](https://nf-co.re/sarek/usage).
+More information about
+[can be found here](https://alexis.praga.dev/reproducible-sarek-germline/tutorials).
 
 ## Documentation
 
@@ -33,14 +35,13 @@ More information about running sarek
 
 Current version (v0.1) has been tested with:
 
-| Step        | Available                      | Not yet available           |
-| ----------- | ------------------------------ | --------------------------- |
-| Alignment   | bwa, **bwa-mem2**, dragmap     |                             |
-| SNV calling | samtools, freebayes, strelka2, |                             |
-|             | **haplotypecaller** (\*)       |                             |
-| CNV calling |                                | cnvkit                      |
-| SV calling  |                                | **tiddit**, manta           |
-| Annotation  |                                | **vep**, snpeff, bcftools ? |
+| Step        | Available                                              |
+| ----------- | ------------------------------------------------------ |
+| Alignment   | bwa, **bwa-mem2**, **dragmap**                         |
+| SNV calling | samtools, freebayes, **strelka2**, **haplotypecaller** |
+| CNV calling | cnvkit                                                 |
+| SV calling  | **tiddit**, **manta**                                  |
+| Annotation  | **vep**, **snpeff**, bcftools ?                        |
 
 Several softwares were already packaged in nixpkgs. In bold, our contribution to
 new or existing packages.
@@ -71,9 +72,3 @@ variants on each push.
 **Lightweight**. Only configuration files and a small test cases are needed.
 Cloning this repository gives you access to a "index" to install package and
 download databases.
-
-### Troubleshoot
-
-#### `gzip` : Too many levels of symbolic links
-
-This happens with the FASTA file in genome_human. `gzip -f` works.
