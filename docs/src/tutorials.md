@@ -122,9 +122,7 @@ datalad get clinvar
 
 will only download clinvar.
 
-##  dependencies
-
-To install all dependencies globally
+### To install all dependencies globally
 
 ```bash
 nix profile install .#*
