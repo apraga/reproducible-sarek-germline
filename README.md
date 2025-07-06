@@ -1,14 +1,16 @@
 ![Builds](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/nix-flake.yml/badge.svg)
 ![Variant calling](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/variant-calling.yml/badge.svg)
 ![Annotation](https://github.com/apraga/reproducible-sarek-germline/actions/workflows/annotation.yml/badge.svg)
+![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
 This repository offers a reproducible, hassle-free environment to analyze
 germline exome or genomic data. In practice, it provides the tools to run
 smoothly [nf-core sarek pipeline](https://nf-co.re/sarek/3.4.2/) (germline only)
 by
 
-1. install all dependencies with [nix](https://nixos.org/) for reproducibility
-2. install datasets needed for variant calling, annotation and filter with
+1. installing all dependencies with [nix](https://nixos.org/) for
+   reproducibility
+2. installing datasets needed for variant calling, annotation and filter with
    [datalad](https://www.datalad.org/)
 
 With 3 steps, the pipeline is ready to be run. No need for Docker or
@@ -16,22 +18,19 @@ Singularity, or Conda !
 
 ## Quickstart
 
-1. Install all dependencies in a shell: `nix develop`
+1. Install dependencies in a shell: `nix develop`
 2. Install datasets in the current directory :
    `datalad clone https://github.com/apraga/dgenomes  ; cd dgenomes ; datalad get genome-human ; gunzip genome-human/GCA*.fna.gz ; tar xzf genome-human/*.tar.gz -C genome-human`
 3. Call SNV with `bwa` and `strelka` on a minimal example with:
 
 ```bash
-nextflow run sarek/main.nf --input tests/ada1-e5-e6.csv --outdir bwa-varcall  --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
-
+nextflow run sarek/main.nf --input tests/ada1-e5-e6.csv --outdir bwa-varcall  --tools strelka  -c tests/test.config
 ```
 
-More information about
-[can be found here](https://alexis.praga.dev/reproducible-sarek-germline/tutorials).
+Tutorials, technical information
+[can be found in the Documentation](https://alexis.praga.dev/reproducible-sarek-germline).
 
-## Documentation
-
-### What's available ?
+## What's available ?
 
 Current version (v0.1) has been tested with:
 
@@ -46,7 +45,7 @@ Current version (v0.1) has been tested with:
 Several softwares were already packaged in nixpkgs. In bold, our contribution to
 new or existing packages.
 
-### Why should I use this ?
+## Why should I use this ?
 
 **Reproducibility**. As part of [nf-core](https://nf-co.re) Sarek offers several
 ways to install dependencies: Docker, Singularity, Podman, Shifter or
@@ -72,3 +71,8 @@ variants on each push.
 **Lightweight**. Only configuration files and a small test cases are needed.
 Cloning this repository gives you access to a "index" to install package and
 download databases.
+
+### Licence
+
+This is free software made available under the MIT License. For details see the
+[LICENSE](LICENSE) file.
