@@ -18,7 +18,7 @@ Singularity, or Conda !
 
 1. Install all dependencies in a shell: `nix develop`
 2. Install datasets in the current directory :
-   `datalad clone https://github.com/apraga/dgenomes  ; cd dgenomes ; datalad get genome_human ; gunzip genome_human/GCA*.fna.gz`
+   `datalad clone https://github.com/apraga/dgenomes  ; cd dgenomes ; datalad get genome-human ; gunzip genome-human/GCA*.fna.gz ; tar xzf genome-human/*.tar.gz -C genome-human`
 3. Call SNV with `bwa` and `strelka` on a minimal example with:
 
 ```bash
