@@ -1,4 +1,4 @@
-name: Minimal variant calling with sarek
+name: Variant calling
 
 on:
   push:

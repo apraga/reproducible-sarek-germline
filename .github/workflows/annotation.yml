@@ -1,4 +1,4 @@
-name: Test annotation
+name: Annotation
 
 on: workflow_dispatch
 
