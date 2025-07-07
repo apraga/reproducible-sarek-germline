@@ -33,18 +33,9 @@ bibliography: paper.bib
 
 # Summary
 
-Medical genetics have made tremendous advance due to technological breakhtrough
-in DNA sequencing. Genome analysis is now part of daily clinical practice. This
-has led to an increasing importance of bioinformatics pipelines to filter and
-analyze large amount of genetic data. Clinical settings requires accurate,
-reproducible and fast results. Such goals have been met for sequencing in
-medical laboratories. Unfortunately, much remains to be done for open-source and
-reproducible pipeline, especially for germline mutation analysis. Recent
-advances in computation reproducibility have been made for workflows management
-and for reference pipeline. Here, we propose to push further the FAIR (findable,
-accessible, interoperable and reusable) principles by improving the
-reproducibility of the reference pipeline for rare diseases, nf-core's sarek ,
-for dependencies and database management.
+Large-scale, whole-genome analyses are now part of daily routine in clinical genomics thanks to technical breakthroughs in DNA sequencing. To process the resulting vast amounts of data, bioinformatics pipelines are paramount for diagnosing rare diseases. Clinical settings require accurate, reproducible, and fast results. Such goals have already been met for sequencing in medical laboratories. However, for bioinformatics workflows, achieving reproducibility across different computing environments remains challenging. Recent advances in open-source computational reproducibility offer better workflow management tools, and there are consensus reference pipelines. nf-core/sarek is a reference pipeline for germline analysis. We propose to improve the sarek pipeline by providing an environment where all dependencies and reference databases are pre-installed in a reproducible way.
+Our approach leverages the Nix functional package manager for deterministic software environments and DataLad for versioned database management.
+This work advances the FAIR (Findable, Accessible, Interoperable, Reusable) principles in clinical bioinformatics by providing a complete reproducible environment for germline variant analysis pipelines.
 
 # Statement of need
 
