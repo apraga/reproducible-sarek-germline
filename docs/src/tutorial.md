@@ -6,8 +6,15 @@ requirement is [to install nix](https://nixos.org/download/#download-nix).
 
 ## Installing all dependencies
 
-`nix` setup for us a shell with everything installed. From the code source
-directory, run:
+First, enable nix flakes:
+
+```bash
+cat 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
+
+```
+
+Then, setup with `nix` a nice hell with everything installed. From the code
+source directory, run:
 
 ```bash
 nix develop

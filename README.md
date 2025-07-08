@@ -48,27 +48,15 @@ new or existing packages.
 
 ### Why should I use this ?
 
-**Reproducibility**. As part of [nf-core](https://nf-co.re) Sarek offers several
-ways to install dependencies: Docker, Singularity, Podman, Shifter or
-Charliecloud or conda as a "last resort"). While those tools have pros, we
-believe a pipeline is more reproducible using [Nix](https://nixos.org). Despite
-not being "bit-per-bit" reproducible in some case, it is much stricter than
-other tools. For example, a package in Nix is not allowed to download external
-dependencies at runtime. Using a simple configuration file called `flake.nix`,
-dependencies version are fixed, so every install will have exactly the same
-version of the tools.
+We follow Unix philosophy to combine several tools, where each tool does one
+thing very well. Here, Sarek managed the pipeline execution. Instead of using
+containers to install package and a single server to download database, those
+are delegated to nix and datalad.
 
-**No third-party**. Database are downloaded directly from their "producer" so
-latest version is easily available for a relevant subset. There are no
-dependencies to Illumina, like sarek has. We maintain the versions so you don't
-have to. Dependencies and database are not linked to sarek, so this setup can be
-used on any relevant pipieline (but nextflow is more supported).
+This ensures **reproduciblity**, the **absence of third-parties** and a
+**decentralized** appreach to follow FAIR principles. Continous integration on
+Github ensure variant calling gives accurate result for a small test case. It's
+**ligthweight** as only a set of configuration files are needed. Finally, it's
+extremely **customizable**.
 
-**Tested**. With `datalad`, checksums on datafile allows to detect partial
-downloads. Continuos integration ensures all packages build. By defining a small
-but clinically relevant test case, SNV calling is checked for "gold standard"
-variants on each push.
-
-**Lightweight**. Only configuration files and a small test cases are needed.
-Cloning this repository gives you access to a "index" to install package and
-download databases.
+[See the context for more information](https://alexis.praga.dev/reproducible-sarek-germline/cntext).

@@ -28,17 +28,33 @@ will only download clinvar.
 
 ## Dependencies
 
-[technical details about nix](reference.md#packaging-with-nix)
+### Avoid recompiling dependencies
+
+By default, nix downloads the source code of a package and builds it from
+scratch. Nixpkgs has its own binary cache to avoid most of compilation. However,
+packages dependent from python 2 are no longer in nixkpgs, due to the lack of
+support of python 2. To avoid rebuilding those packages, you can set up a binary
+cache [with cachix for example](https://app.cachix.org). This is what the Github
+CI does to avoid rebuilding everything. Of course, if there has been a
+modification in the package, the binary cache will invalidated and it will be
+built from the source code.
 
 ### Install all dependencies globally
+
+Instead of having a dedicated shell, you may want to have them available in the
+PATH:
 
 ```bash
 nix profile install .#*
 ```
 
-This will make
+### Use another version of a tool
 
-### use another version of a tools (code + outsied nix)
+Sometimes, you may want to use a newer or older version. Nix is quite flexible
+but it does requires a bit configuration. Basically, creates
+`packages/MYPACKAGE/default.nix` following `pyflow` configuration for example.
+Then udpate `packages/default.nix` to override the pacakge (again, see how we do
+it for pyflow).
 
 ## Running the pipeline
 
@@ -71,22 +87,3 @@ Configuration files are powerful and can be used to define [profiles]().
 ### `gzip` : Too many levels of symbolic links
 
 This happens with the FASTA file in genome_human. `gzip -f` works.
-
-## My cluster do not have internet access
-
-Not supported.
-
-## FAQ
-
-**Can I install dependencies without nix ?** Absolutely. You can either let
-`sarek` install them for you using different profiles. When running the
-pipeline, simply add `-profile docker` or `-profile singularity` for example.
-See
-[nf-core instructions](https://nf-co.re/docs/usage/installation#pipeline-software)
-for more information. Or you can install them manually. As long as there are
-available on the $PATH, it should work. This is not recommended as it is quite
-painful to do and even more so to keep it uptodate.
-
-```
-
-```

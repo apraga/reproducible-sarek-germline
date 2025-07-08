@@ -33,12 +33,15 @@ Minimal testing :
 
 ## Dependencies
 
+summary of nix derivation and hash.
+
 Reminder of nix architecture. Explain the difference betweet nix shell and
 gloabl install
 
 TODO
 
-- python2
+- python2 -> local version everything has been contributed back to nix
+
 - cnnnscore
 - nextflow
 
