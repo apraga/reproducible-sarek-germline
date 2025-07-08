@@ -13,7 +13,7 @@ authors:
   - name: Alexis Overs
     orcid: 0000-0002-0131-9713
     affiliation: 2
-  - name: Gaëtan Lepage
+  - name: Gaétan Lepage
     orcid: 0000-0002-5134-7763
     affiliation: 3
 affiliations:
@@ -24,8 +24,7 @@ affiliations:
   - name: Department of Oncobiology, University Hospital of Besançon, France
     index: 2
   - name:
-      Grenoble INP Ensimag, HES-SO Valais Wallis, Inria Centre de Recherche
-      Grenoble Rhone-Alpes, Université Grenoble Alpes
+      Centre Inria de l'Université Grenoble Alpes, France
     index: 3
 date: 07 July 2025
 bibliography: paper.bib
