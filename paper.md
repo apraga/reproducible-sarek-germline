@@ -1,9 +1,9 @@
 ---
-title: Improving nf-core/sarek reproductibility
+title: Reproducible germline analysis with nf-core/sarek using Nix and DataLad
 tags:
   - bioinformatics
   - genetics
-  - reproductibility
+  - reproducibility
   - nix
 authors:
   - name: Alexis Praga
@@ -12,29 +12,23 @@ authors:
     affiliation: "1" # (Multiple affiliations must be quoted)
   - name: Alexis Overs
     orcid: 0000-0002-0131-9713
-    affiliation: 2
-  - name: Gaëtan Lepage
+    affiliation: 1
+  - name: Gaétan Lepage
     orcid: 0000-0002-5134-7763
-    affiliation: 3
+    affiliation: 2
 affiliations:
   - name:
       Oncobiologie Génétique Bioinformatique,  University Hospital of Besançon,
       France
     index: 1
-  - name: Department of Oncobiology, University Hospital of Besançon, France
-    index: 2
   - name:
-      Grenoble INP Ensimag, HES-SO Valais Wallis, Inria Centre de Recherche
-      Grenoble Rhone-Alpes, Université Grenoble Alpes
-    index: 3
+      Centre Inria de l'Université Grenoble Alpes, France
+    index: 2
 date: 07 July 2025
 bibliography: paper.bib
 ---
 
 # Summary
-
-<!-- A summary describing the high-level functionality and purpose of the software -->
-<!-- for a diverse, non-specialist audience. -->
 
 Analysis of the entire genome is now part of daily routine in clinical genomics
 thanks to technical breakthroughs in DNA sequencing. This results in large
@@ -47,8 +41,6 @@ principles in clinical bioinformatics by providing a complete reproducible
 environment for software dependencies and reference textual databases.
 
 # Statement of need
-
-<!-- A clear statement of need that illustrates the purpose of the software. -->
 
 In bioinformatics, there is a "reproducibility" crisis due to a wide variety of
 command-line utilities, possibly with non-deterministic output
@@ -63,10 +55,6 @@ static databases or require manual management of database versions. We offer an 
 solution for reproducible package and database management for a reference pipeline
 in germline genetics.
 
-<!-- A description of how this software compares to other commonly-used packages -->
-<!-- in this research area. -->
-<!-- Mentions (if applicable) of any ongoing research projects using the software or recent scholarly publications enabled by it. -->
-
 Functional package managers like Nix or Guix allow for fully deterministic
 software builds, an approach more robust than containerization.
 [@dolstra_nix_2004;@courtes_functional_2013]. Here, we packaged Sarek software
@@ -74,14 +62,13 @@ dependencies in Nix for germline analysis and contributed all changes to Nix
 central package repository, nixpkgs. Instead of duplicating databases across
 servers, like Illumina iGenomes used by Sarek, we offer for the first time a
 decentralized approach for data management based on DataLad
-@halchenko_datalad_2021. All remote database locations are stored in a single
-configuration, allowing for modular access and easier updates. In practice, our
+[@halchenko_datalad_2021]. All remote database locations are stored in a single
+configuration file, allowing for modular access and easier updates. In practice, our
 project is completely defined by several configurations, for Nix and Nextflow
-execution, and several minimal GitHub repositories to track databases locations.
+execution, and several minimal open-source GitHub repositories to track databases locations.
 
-The project can be used by both researchers and clinical doctors in germline
-genetics. This approach cleanly separates package management and database
-provisioning from workflow exection in a modular fashion to improve reusability
+The project can be used for germline genetics, both in research and clinical care. This approach cleanly separates package management and database
+provisioning from workflow execution in a modular fashion to improve reusability
 and reproducibility.
 
 # Acknowledgements
