@@ -13,18 +13,20 @@ cd cadd ; git annex drop whole_genome_SNVs.tsv.gz*
 cd vep-human ; git annex drop homo_sapiens_merged_vep_110_GRCh38.tar.gz
 ```
 
-- download only some database
+### Download only some databases
 
-#### update it
+Simply get the corresponding folder. From dgenomes root directy, download only
+clinvar with:
 
-To only download a subset, get the corresponding folder. Assuming you cloned
-already:
-
-```
+```bash
 datalad get clinvar
 ```
 
-will only download clinvar.
+### Update
+
+To keep things up-to-date, synchronize dgenomes: `datalad update --how merge`
+Then update the database by going into the corresponding folder and run the same
+command.
 
 ## Dependencies
 
@@ -86,4 +88,5 @@ Configuration files are powerful and can be used to define [profiles]().
 
 ### `gzip` : Too many levels of symbolic links
 
-This happens with the FASTA file in genome_human. `gzip -f` works.
+This happens when extracting the FASTA file in `genome_human`. `gzip -f` is
+required for that.

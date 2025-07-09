@@ -6,3 +6,4 @@ environment for nf-core Sarek pipeline. More advanced topics are covered
 
 To help situate the project, we develop [the context there](./context.md).
 Technical details are [also available for reference](./reference.md).
+[Contributions](./contributing.md) are of course welcome !

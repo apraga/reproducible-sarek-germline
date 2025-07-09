@@ -6,3 +6,4 @@
 - [Context](context.md)
 - [Technical reference](reference.md)
 - [FAQ](faq.md)
+- [Contributing](contributing.md)
