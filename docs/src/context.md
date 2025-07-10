@@ -1,26 +1,25 @@
 # Context
 
-**Reproducibility**. As part of [nf-core](https://nf-co.re) Sarek offers several
-ways to install dependencies: Docker, Singularity, Podman, Shifter or
-Charliecloud or conda as a "last resort"). While those tools have pros, we
-believe a pipeline is more reproducible using [Nix](https://nixos.org). Despite
-not being "bit-per-bit" reproducible in some case, it is much stricter than
-other tools. For example, a package in Nix is not allowed to download external
-dependencies at runtime. Using a simple configuration file called `flake.nix`,
-dependencies version are fixed, so every install will have exactly the same
-version of the tools.
+With the development of Nextflow and the likes (Sarek), it is now much simpler to have a portable pipeline than run with multiple schedulers.
+Nf-core is an initiative based on nextflow to offer "reference" pipeline for a given application.
+Sarek is one of these pipeline than can analyse germline or somatic data for mutations.
+Nf-core pipeline package their dependencies according to multiple strategies (Docker, Singularity, Podman, Shifter, Charliecloud or conda as a "last resort").
+Databases management for Sarek is deferred to a central server managed by Illumina, called iGenomes.
 
-**No third-party**. Database are downloaded directly from their "producer" so
-latest version is easily available for a relevant subset. There are no
-dependencies to Illumina, like sarek has. We maintain the versions so you don't
-have to. Dependencies and database are not linked to sarek, so this setup can be
-used on any relevant pipieline (but nextflow is more supported).
+We offer another approach where dependencies and databases are managed outside Sarek, using Nix and Datalad. Here are the main pros:
+
+**Reproducibility** For software, containerization is commonly used to offer a portable, closed and reproducible environment. Nix and Guix offer, in our sense, a superior approach to package management. For a given input (software version, checksum of the source code), a package will be build in exactly the same way across multiple architectures. This is possible as Nix stores everything in a special folder, the *store*, and with its graph-based approach to dependencies. A single change in the chain of dependencies will rebuild everything. On top of that, Nix can produce Docker files, allowing for containerization later on.
+
+Databases are managed on Datalad, which is based on git-annex. This allows large files to be managed by git in a Decentralized approach where multiple location can be kept in sync. 
+Raw files are not stored, only their "address" (URL, local folder....).
+
+**Decentralized** All packages version are fixed using a simple configuration file called `flake.nix`. Each database is versioned in a git repository, which stores only its location on the web. This means it's lightweight, easily hackable and can be used for other pipelines.
+
+**Up-to-date**. It is easier to keep track of changes in separate repositories. Nixpkgs is an (very) active project and software are often on the latest version. Database are downloaded directly from their "producer". We maintain the versions so you don't
+have to. 
+
+**Portable**. Dependencies are simply installed in the PATH. They only require nix to be installed. Even on systems without nix, it's possible to create standalone archives for each software where all dependencies are packed in. Databases are simply symlinks to folder managed by git annex and can be installed anywhere. Finally, this approach is not specific to sarek and used on any relevant pipieline.
 
 **Tested**. With `datalad`, checksums on datafile allows to detect partial
-downloads. Continuos integration ensures all packages build. By defining a small
-but clinically relevant test case, SNV calling is checked for "gold standard"
-variants on each push.
-
-**Lightweight**. Only configuration files and a small test cases are needed.
-Cloning this repository gives you access to a "index" to install package and
-download databases.
+downloads. Continuous integration ensures all packages build. By defining a small
+but clinically relevant test case, SNV and SV calling are checked on each change.
