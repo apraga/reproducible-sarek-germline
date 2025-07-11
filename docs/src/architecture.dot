@@ -1,0 +1,68 @@
+digraph ProjectArchitecture {
+    // Graph settings
+    //    layout=twopi;
+    node [shape=box, style=filled];
+    // For link to subgraph
+    compound=true;
+    
+    start [label="Github repo", fillcolor=lightblue, shape=ellipse, fontweight=bold, fontsize=14];
+    flake[label="flake.nix", fillcolor=white, shape=note];
+
+    
+    subgraph cluster_nixpkgs {
+        label="Nixpkgs";
+        style=filled;
+        fillcolor=lightyellow;
+
+        fontsize=12;
+        
+        bwa [label="bwa\ngatk\n...", fillcolor=white, shape=note];
+    }
+ 
+    subgraph cluster_local {
+        label="Local Packages";
+        style=filled;
+        fillcolor=lightyellow;
+
+        fontsize=12;
+
+        
+        local_pkgs [label="manta\npyflow\nstrelka", fillcolor=white, shape=note];
+    }
+    
+    // Large dgenome container
+    subgraph cluster_dgenome {
+    rankdir=TB;
+        label="dgenome";
+
+        style=filled;
+        fillcolor=lightgreen;
+        fontsize=16;
+        fontweight=bold;
+        
+        // Database components
+        CADD [ fillcolor=white];
+        genome [ fillcolor=white];
+        clinvar [ fillcolor=white];
+        dbsnp [ fillcolor=white];
+    }
+    
+    cadd_url [label="CADD\nwebsite", fillcolor=orange, shape=ellipse];
+    genome_url [label="NCBI", fillcolor=orange, shape=ellipse];
+    clinvar_url [label="ClinVar\nwebsite", fillcolor=orange, shape=ellipse];
+    dbsnp_url [label="dbSNP\nwebsite", fillcolor=orange, shape=ellipse];
+    
+    // Connections from flake.nix
+    start -> flake;
+    flake -> bwa[lhead=cluster_nixpkgs];
+    flake -> local_pkgs [lhead=cluster_local,label="uses"];
+    
+    start -> CADD[lhead=cluster_dgenome] ;
+    
+    genome -> genome_url [label="fetches from", style=dashed];
+    CADD -> cadd_url [ style=dashed];
+    // External connections
+    dbsnp -> dbsnp_url [ style=dashed];
+    clinvar -> clinvar_url [ style=dashed];
+}
+    

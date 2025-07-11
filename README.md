@@ -29,9 +29,9 @@ nextflow run sarek/main.nf --input tests/ada1-e5-e6.csv --outdir bwa-varcall  --
 More information about
 [can be found here](https://alexis.praga.dev/reproducible-sarek-germline/tutorial).
 
-## Documentation
+![Architecture](docs/src/architecture.svg)
 
-### What's available ?
+## What's available ?
 
 Current version (v0.1) has been tested with:
 
@@ -46,7 +46,7 @@ Current version (v0.1) has been tested with:
 Several softwares were already packaged in nixpkgs. In bold, our contribution to
 new or existing packages.
 
-### Why should I use this ?
+## Why should I use this ?
 
 We follow Unix philosophy to combine several tools, where each tool does one
 thing very well. Here, Sarek managed the pipeline execution. Instead of using
@@ -59,4 +59,4 @@ Github ensure variant calling gives accurate result for a small test case. It's
 **ligthweight** as only a set of configuration files are needed. Finally, it's
 extremely **customizable**.
 
-[See the context for more information](https://alexis.praga.dev/reproducible-sarek-germline/cntext).
+[See the context for more information](https://alexis.praga.dev/reproducible-sarek-germline/context).

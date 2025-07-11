@@ -10,3 +10,5 @@ repository. The central hub for those is
 [dgenomes](https://github.com/apraga/dgenomes). If updates are too slow for you,
 please open a pull request there. If databases are missing, please open a pull
 request.
+
+This project is only for germline analysis. We are open to improve it to add somatic analysis too.

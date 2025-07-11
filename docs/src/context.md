@@ -22,4 +22,4 @@ have to.
 
 **Tested**. With `datalad`, checksums on datafile allows to detect partial
 downloads. Continuous integration ensures all packages build. By defining a small
-but clinically relevant test case, SNV and SV calling are checked on each change.
+but clinically relevant test case, SNV (single nucleotide variation) and structural variant calling are checked on each change.

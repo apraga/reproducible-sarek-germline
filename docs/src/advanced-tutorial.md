@@ -99,8 +99,6 @@ command-line.
 By default, What is hidden in this command line More information about running
 sarek -[can be found here](https://nf-co.re/sarek/usage).
 
-TODO add user on a cluster (add example configuration to the code)
-
 ### Set sarek version
 
 Add `-r version` on the command-line.
@@ -117,7 +115,7 @@ is to set ressources for processes tagged:
 
 An example is given in `conf/slurm.config` for slurm. Oher executors can of
 course be used. It's possible to set resources for
-[specificr proesses](https://www.nextflow.io/docs/latest/config.html)
+[specific processes](https://www.nextflow.io/docs/latest/config.html).
 
 ## Troubleshoot
 
