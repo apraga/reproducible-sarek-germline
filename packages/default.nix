@@ -32,7 +32,9 @@
             htslib
             mosdepth
             multiqc
+            nextflow
             samtools
+            tiddit
             vep
             vcftools
 
@@ -44,11 +46,7 @@
           # TODO contribute to nixpkgs
           cnvkit = pkgs.callPackage ./cnvkit { };
           # TODO contribute to nixpkgs
-          tiddit = pkgs.callPackage ./tiddit { };
-          # TODO contribute to nixpkgs
           snpeff = pkgs.callPackage ./snpeff { };
-          # TODO contribute to nixpkgs
-          nextflow = pkgs.callPackage ./nexflow { };
 
           # Python 2, not supported by nixpkgs
           manta = pkgs.callPackage ./manta { };
@@ -64,7 +62,8 @@
             name = "bundle";
             paths = lib.attrValues config.__dependencies;
           };
-        } // config.__dependencies;
+        }
+        // config.__dependencies;
 
         checks = config.packages;
       };

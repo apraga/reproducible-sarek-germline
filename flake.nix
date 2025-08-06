@@ -2,7 +2,7 @@
 
   inputs = {
     # Fix nixpkgs version
-    nixpkgs.url = "github:NixOS/nixpkgs/8b4774acdcb580100877eeb59d2a9eca4380ffb1";
+    nixpkgs.url = "github:NixOS/nixpkgs/6482aafbb69e0dbd572e87d798dc8f660b662d63";
     # nixpkgs.url = "nixpkgs/nixos-unstable";
 
     flake-parts = {
