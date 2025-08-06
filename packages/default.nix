@@ -33,7 +33,6 @@
             mosdepth
             multiqc
             nextflow
-            samtools
             tiddit
             vep
             vcftools
@@ -42,6 +41,21 @@
             datalad
             git-annex
             ;
+
+          # Downgrade htslib 1.21 to avoid samtools to output files in CRAM 3.1
+          # GATK haplotyecaller does not support that. This means samtools must
+          # also be downgraded
+          samtools =
+            (pkgs.samtools.override {
+              htslib = pkgs.callPackage ./htslib { };
+            }).overrideAttrs
+              (old: rec {
+                version = "1.21";
+                src = pkgs.fetchurl {
+                  url = "https://github.com/samtools/samtools/releases/download/${version}/samtools-${version}.tar.bz2";
+                  sha256 = "sha256-BXJLCDprbwMF/K5SQ6BWzDbPgmMJw8uTR6a4nuP8Wto=";
+                };
+              });
 
           # TODO contribute to nixpkgs
           cnvkit = pkgs.callPackage ./cnvkit { };
