@@ -58,8 +58,6 @@
               });
 
           # TODO contribute to nixpkgs
-          cnvkit = pkgs.callPackage ./cnvkit { };
-          # TODO contribute to nixpkgs
           snpeff = pkgs.callPackage ./snpeff { };
 
           # Python 2, not supported by nixpkgs
