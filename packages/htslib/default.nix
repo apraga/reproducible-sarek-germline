@@ -9,12 +9,12 @@
   perl,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "htslib";
   version = "1.21";
 
   src = fetchurl {
-    url = "https://github.com/samtools/htslib/releases/download/${version}/${pname}-${version}.tar.bz2";
+    url = "https://github.com/samtools/htslib/releases/download/${finalAttrs.version}/${finalAttrs.pname}-${finalAttrs.version}.tar.bz2";
     sha256 = "sha256-hLUQ5zX0ljZB8m/YjIq97oH/TLYhaDEK5xZjaqwPGCM=";
   };
 
@@ -60,11 +60,11 @@ stdenv.mkDerivation rec {
 
   doCheck = true;
 
-  meta = with lib; {
+  meta = {
     description = "C library for reading/writing high-throughput sequencing data";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     homepage = "http://www.htslib.org/";
-    platforms = platforms.unix;
-    maintainers = [ maintainers.mimame ];
+    platforms = lib.platforms.unix;
+    maintainers = [ lib.maintainers.mimame ];
   };
-}
+})
