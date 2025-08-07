@@ -1,9 +1,8 @@
 {
 
   inputs = {
-    # Fix nixpkgs version
-    nixpkgs.url = "github:NixOS/nixpkgs/6482aafbb69e0dbd572e87d798dc8f660b662d63";
-    # nixpkgs.url = "nixpkgs/nixos-unstable";
+    # Force nixpkgs version for reproducibility
+    nixpkgs.url = "github:NixOS/nixpkgs/b14a5f5b45eefad36f336894580bc4bccc602484";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
