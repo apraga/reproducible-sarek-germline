@@ -117,9 +117,4 @@ An example is given in `conf/slurm.config` for slurm. Oher executors can of
 course be used. It's possible to set resources for
 [specific processes](https://www.nextflow.io/docs/latest/config.html).
 
-## Troubleshoot
 
-### `gzip` : Too many levels of symbolic links
-
-This happens when extracting the FASTA file in `genome_human`. `gzip -f` is
-required for that.
