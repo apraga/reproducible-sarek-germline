@@ -1,5 +1,9 @@
 # FAQ
 
+## Can I use more recent Sarek version ?
+
+The current version of nextflow works with sarek 3.5.1. Newer version requires a [manual install](https://docs.seqera.io/nextflow/install) of nextflow.
+
 ## Can I use on my cluster ?
 
 You need to have nix setup for your cluster. Otherwise,

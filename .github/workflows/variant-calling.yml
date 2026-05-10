@@ -9,12 +9,12 @@ on:
       sarek_revision:
         description: 'Sarek pipeline revision/tag to test'
         required: false
-        default: 'master'
+        default: '3.5.1'
         type: string
 
 
 env:
-  SAREK_REVISION: ${{ github.event.inputs.sarek_revision || 'master' }}
+  SAREK_REVISION: ${{ github.event.inputs.sarek_revision || '3.5.1' }}
   NXF_VER: "24.04.2"
 
 jobs:

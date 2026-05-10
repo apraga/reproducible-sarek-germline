@@ -22,7 +22,7 @@ Singularity, or Conda !
 3. Call SNV with `bwa` and `strelka` on a minimal example with:
 
 ```bash
-nextflow run sarek/main.nf --input tests/ada1-e5-e6.csv --outdir bwa-varcall  --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
+nextflow run nf-core/sarek -r 3.5.1 --input tests/ada1-e5-e6.csv --outdir bwa-varcall  --tools mpileup,haplotypecaller,freebayes,strelka  -c tests/test.config --skip_tools baserecalibrator,haplotypecaller_filter
 
 ```
 
